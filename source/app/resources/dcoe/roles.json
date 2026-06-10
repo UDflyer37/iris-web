@@ -1,0 +1,210 @@
+{
+  "version": "1.0",
+  "organisations": [
+    {
+      "org_name": "OhCR",
+      "org_description": "Ohio Cyber Reserve"
+    },
+    {
+      "org_name": "DCOE",
+      "org_description": "Defensive Cyber Operations Element"
+    }
+  ],
+  "permission_sets": {
+    "leadership": [
+      "standard_user",
+      "alerts_read",
+      "alerts_write",
+      "search_across_cases",
+      "customers_read",
+      "customers_write",
+      "case_templates_read",
+      "case_templates_write",
+      "activities_read",
+      "all_activities_read"
+    ],
+    "knowledge_manager": [
+      "standard_user",
+      "alerts_read",
+      "alerts_write",
+      "search_across_cases",
+      "customers_read",
+      "case_templates_read",
+      "activities_read"
+    ],
+    "sme": [
+      "standard_user",
+      "alerts_read",
+      "alerts_write",
+      "search_across_cases",
+      "customers_read",
+      "activities_read"
+    ]
+  },
+  "groups": [
+    {
+      "group_name": "OhCR-DCOE-TM",
+      "group_description": "OhCR/DCOE Team Manager",
+      "role_code": "TM",
+      "permission_set": "leadership",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-DTM",
+      "group_description": "OhCR/DCOE Deputy Team Manager",
+      "role_code": "DTM",
+      "permission_set": "leadership",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-KM",
+      "group_description": "OhCR/DCOE Knowledge Manager",
+      "role_code": "KM",
+      "permission_set": "knowledge_manager",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-RMA",
+      "group_description": "OhCR/DCOE Risk Management Auditor SME",
+      "role_code": "RMA",
+      "permission_set": "sme",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-NETAD",
+      "group_description": "OhCR/DCOE Network Administration SME",
+      "role_code": "NETAD",
+      "permission_set": "sme",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-DF",
+      "group_description": "OhCR/DCOE Digital Forensics SME",
+      "role_code": "DF",
+      "permission_set": "sme",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-INT",
+      "group_description": "OhCR/DCOE Intrusion Detection SME",
+      "role_code": "INT",
+      "permission_set": "sme",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-END",
+      "group_description": "OhCR/DCOE Endpoint Analyst SME",
+      "role_code": "END",
+      "permission_set": "sme",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-ASA",
+      "group_description": "OhCR/DCOE All Source Analyst SME",
+      "role_code": "ASA",
+      "permission_set": "sme",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-SIEM",
+      "group_description": "OhCR/DCOE SIEM Analyst SME",
+      "role_code": "SIEM",
+      "permission_set": "sme",
+      "auto_follow": true
+    },
+    {
+      "group_name": "OhCR-DCOE-SYSAD",
+      "group_description": "OhCR/DCOE System Administration SME",
+      "role_code": "SYSAD",
+      "permission_set": "sme",
+      "auto_follow": true
+    }
+  ],
+  "users": [
+    {
+      "user_login": "dcoe-tm",
+      "user_name": "DCOE Team Manager",
+      "user_email": "dcoe-tm@ohcr.local",
+      "groups": ["OhCR-DCOE-TM"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-dtm",
+      "user_name": "DCOE Deputy Team Manager",
+      "user_email": "dcoe-dtm@ohcr.local",
+      "groups": ["OhCR-DCOE-DTM"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-km",
+      "user_name": "DCOE Knowledge Manager",
+      "user_email": "dcoe-km@ohcr.local",
+      "groups": ["OhCR-DCOE-KM"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-rma",
+      "user_name": "DCOE Risk Management Auditor",
+      "user_email": "dcoe-rma@ohcr.local",
+      "groups": ["OhCR-DCOE-RMA"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-netad",
+      "user_name": "DCOE Network Admin SME",
+      "user_email": "dcoe-netad@ohcr.local",
+      "groups": ["OhCR-DCOE-NETAD"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-df",
+      "user_name": "DCOE Digital Forensics SME",
+      "user_email": "dcoe-df@ohcr.local",
+      "groups": ["OhCR-DCOE-DF"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-int",
+      "user_name": "DCOE Intrusion Analyst SME",
+      "user_email": "dcoe-int@ohcr.local",
+      "groups": ["OhCR-DCOE-INT"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-end",
+      "user_name": "DCOE Endpoint Analyst SME",
+      "user_email": "dcoe-end@ohcr.local",
+      "groups": ["OhCR-DCOE-END"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-asa",
+      "user_name": "DCOE All Source Analyst SME",
+      "user_email": "dcoe-asa@ohcr.local",
+      "groups": ["OhCR-DCOE-ASA"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-siem",
+      "user_name": "DCOE SIEM Analyst SME",
+      "user_email": "dcoe-siem@ohcr.local",
+      "groups": ["OhCR-DCOE-SIEM"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-sysad",
+      "user_name": "DCOE System Admin SME",
+      "user_email": "dcoe-sysad@ohcr.local",
+      "groups": ["OhCR-DCOE-SYSAD"],
+      "organisations": ["OhCR", "DCOE"]
+    },
+    {
+      "user_login": "dcoe-siem-api",
+      "user_name": "DCOE SIEM Integration Service",
+      "user_email": "dcoe-siem-api@ohcr.local",
+      "groups": ["OhCR-DCOE-SIEM"],
+      "organisations": ["OhCR", "DCOE"],
+      "is_service_account": true
+    }
+  ]
+}
