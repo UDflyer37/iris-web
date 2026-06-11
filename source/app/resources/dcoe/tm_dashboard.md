@@ -30,6 +30,8 @@ This guide covers the **Team Manager (TM)** daily workflow in DFIR-IRIS after ru
 | **Reporting index** | Mission case → note **METL Report MOP Evidence Index** | 21 report deliverables |
 | **NETO tracker** | Mission case → `01 - Authority and NETO Access` | Ticket # ≥ 1001 |
 | **Daily SitRep** | Mission case → `07 - Daily SitRep` | MOP 7.2.1 |
+| **Reporting templates** | Mission case → `11 - Reporting Template Library` | All formal reports |
+| **Network topology** | Sidebar → **Network Topology** | NETAD / team terrain view |
 
 Direct alert URL pattern (after selecting a saved filter once, note the `filter_id`):
 

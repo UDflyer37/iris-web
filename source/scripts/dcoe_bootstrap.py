@@ -246,6 +246,8 @@ def build_mission_case_template(metl_data: dict, note_data: dict, dashboards_dat
             "\n\n## OhCR/DCOE Mission Case\n"
             "TLP:AMBER+STRICT — Internal system of record (DFIR-IRIS).\n\n"
             "**Every team member:** open `10 - Operator Guides (Read First)` and read your role guide.\n\n"
+            "Reporting templates: `11 - Reporting Template Library`.\n\n"
+            "Network map: sidebar **Network Topology** (linked to case assets).\n\n"
             "Team Manager: METL Evidence Index + filter `tm-checklist-report`.\n\n"
             "Knowledge Manager: daily SitReps in `07 - Daily SitRep`.\n"
         ),
@@ -428,6 +430,11 @@ def bootstrap_custom_attributes():
                 "type": "input_string",
                 "mandatory": False,
                 "value": "AMBER+STRICT",
+            },
+            "Network topology view": {
+                "type": "input_string",
+                "mandatory": False,
+                "value": "/case/dcoe/network",
             },
         }
     }

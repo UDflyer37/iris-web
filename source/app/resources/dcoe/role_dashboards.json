@@ -244,7 +244,8 @@
       },
       "note_directories": [
         {"path": "03 - Battlespace Enumeration", "use": "Network map index — PRIMARY"},
-        {"path": "06 - Hardening and Mitigations", "use": "Network mitigation details"}
+        {"path": "06 - Hardening and Mitigations", "use": "Network mitigation details"},
+        {"path": "11 - Reporting Template Library", "use": "Network Map Status Report template"}
       ],
       "alert_filters": [
         {"name": "OhCR-DCOE: SIEM Detections", "when": "Network-relevant detections"}
@@ -253,15 +254,28 @@
         {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
       ],
       "iris_tools": [
+        {"tool": "Network Topology", "use": "/case/dcoe/network — build interactive diagram linked to assets"},
         {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-netad"},
         {"tool": "Mission case → Notes", "use": "03 Network Map and Overlay Index"},
-        {"tool": "Case → Assets", "use": "Document network assets and topology"},
+        {"tool": "Case → Assets", "use": "Register assets then Import all assets into topology"},
         {"tool": "Case → Evidence", "use": "Attach map files and pcaps metadata"}
       ],
       "daily_workflow": {
-        "start_of_shift": ["Review assigned alerts for network scope", "Update map index links"],
-        "during_ops": ["Support SMEs with network context", "Log overlay changes in 03"],
-        "end_of_shift": ["Confirm map coverage % for MOE 3.3.7", "Send network delta to KM"]
+        "start_of_shift": [
+          "Open Network Topology — import new assets and verify zones",
+          "Review assigned alerts for network scope",
+          "Update map index links in 03"
+        ],
+        "during_ops": [
+          "Comment on topology nodes when terrain changes",
+          "Support SMEs with network context",
+          "Log overlay changes in 03"
+        ],
+        "end_of_shift": [
+          "Copy Network Map Status Report template in 11",
+          "Confirm map coverage % for MOE 3.3.7",
+          "Send network delta to KM"
+        ]
       },
       "reporting_deliverables": [
         "Physical network map (2.6.1)",

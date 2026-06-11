@@ -1,0 +1,115 @@
+{
+  "version": "1.0",
+  "source": "OhCR IR Operators Guide Rev12g / METL Rev1a Report MOPs",
+  "note_directory": "11 - Reporting Template Library",
+  "templates": [
+    {
+      "key": "reporting_catalog",
+      "title": "Reporting Template Catalog (START HERE)",
+      "mop_ids": [],
+      "roles": ["TM", "KM"],
+      "frequency": "reference",
+      "description": "Index of all IRIS reporting templates and when to use them"
+    },
+    {
+      "key": "sitrep_ohcr_template",
+      "title": "SitRep TEMPLATE — OhCR Internal (copy per day)",
+      "mop_ids": ["7.2.1"],
+      "roles": ["KM", "TM"],
+      "frequency": "daily",
+      "description": "Internal daily SitRep — never release to NETO",
+      "note_ref": "07 - Daily SitRep"
+    },
+    {
+      "key": "sitrep_customer_template",
+      "title": "SitRep TEMPLATE — Customer NETO (copy per day)",
+      "mop_ids": ["7.2.1"],
+      "roles": ["KM", "TM"],
+      "frequency": "daily",
+      "description": "Sanitized customer SitRep for NETO",
+      "note_ref": "07 - Daily SitRep"
+    },
+    {
+      "key": "intsum_template",
+      "title": "INTSUM TEMPLATE — Daily Intelligence Summary",
+      "mop_ids": ["7.1.2"],
+      "roles": ["ASA"],
+      "frequency": "daily",
+      "description": "All Source Analyst daily intelligence summary for inbrief"
+    },
+    {
+      "key": "informal_neto_update",
+      "title": "Informal NETO Update Log",
+      "mop_ids": ["3.3.3"],
+      "roles": ["TM", "KM"],
+      "frequency": "as_needed",
+      "description": "Log informal NETO coordination not requiring formal ticket"
+    },
+    {
+      "key": "neto_network_action_request",
+      "title": "NETO Network Action Request (EA8)",
+      "mop_ids": ["2.3.2", "3.3.4"],
+      "roles": ["TM", "NETAD", "RMA"],
+      "frequency": "as_needed",
+      "description": "Formal privileged access / network action request form"
+    },
+    {
+      "key": "hunt_status_report",
+      "title": "Hunt Status Report",
+      "mop_ids": ["3.5.3"],
+      "roles": ["INT", "DF", "DTM"],
+      "frequency": "daily",
+      "description": "Active hunt and incident status for SitRep section 3"
+    },
+    {
+      "key": "incident_closure_report",
+      "title": "Incident Closure Report",
+      "mop_ids": ["5.3.1"],
+      "roles": ["KM", "DF", "INT"],
+      "frequency": "per_incident",
+      "description": "Close-out narrative when child incident case completes"
+    },
+    {
+      "key": "gold_report_outline",
+      "title": "Gold Report Outline (EA15) — MOP 7.4.1",
+      "mop_ids": ["7.4.1"],
+      "roles": ["KM", "DTM", "TM"],
+      "frequency": "end_of_mission",
+      "description": "Final outbrief / NDP Gold Report",
+      "note_ref": "08 - Gold Report"
+    },
+    {
+      "key": "aar_template",
+      "title": "AAR Template (EA21) — MOP 7.4.2",
+      "mop_ids": ["7.4.2"],
+      "roles": ["TM", "KM"],
+      "frequency": "end_of_mission",
+      "description": "After Action Review — minimum 3 comments required",
+      "note_ref": "09 - AAR and Hotwash"
+    },
+    {
+      "key": "network_map_status",
+      "title": "Network Map Status Report",
+      "mop_ids": ["2.6.1", "2.6.2", "3.3.5", "3.3.7"],
+      "roles": ["NETAD", "TM"],
+      "frequency": "daily",
+      "description": "Network map coverage and overlay status — links to interactive topology"
+    },
+    {
+      "key": "vulnerability_finding_report",
+      "title": "Vulnerability Finding Report",
+      "mop_ids": ["3.4.1"],
+      "roles": ["RMA", "NETAD"],
+      "frequency": "per_finding",
+      "description": "Document vuln finding for SitRep and Gold Report routing"
+    },
+    {
+      "key": "hardening_recommendation_report",
+      "title": "Hardening Recommendation Report",
+      "mop_ids": ["4.10.1"],
+      "roles": ["TM", "KM", "NETAD", "END"],
+      "frequency": "as_needed",
+      "description": "Formal hardening recommendation to NETO"
+    }
+  ]
+}

@@ -45,6 +45,20 @@
     {
       "title": "METL Evidence Index",
       "notes": ["metl_report_mop_index", "metl_moe_validation_log"]
+    },
+    {
+      "title": "11 - Reporting Template Library",
+      "notes": [
+        "reporting_catalog",
+        "intsum_template",
+        "informal_neto_update",
+        "neto_network_action_request",
+        "hunt_status_report",
+        "incident_closure_report",
+        "network_map_status",
+        "vulnerability_finding_report",
+        "hardening_recommendation_report"
+      ]
     }
   ],
   "templates": {
@@ -78,7 +92,7 @@
     },
     "network_map_index": {
       "title": "Network Map and Overlay Index (EA12)",
-      "content": "TLP:AMBER\n\n## Physical network map — MOP 2.6.1\n- Evidence file/link:\n- Last updated:\n\n## Logical network map — MOP 2.6.2\n- Evidence file/link:\n- Last updated:\n\n## Traffic flow overlay — MOP 3.3.5\n- Evidence file/link:\n- Confirmed with NETAD:\n"
+      "content": "TLP:AMBER\n\n## Interactive topology (IRIS)\n- Live diagram: **Network Topology** (`/case/dcoe/network`)\n- Import case assets → arrange zones → comment on components\n\n## Physical network map — MOP 2.6.1\n- Evidence file/link:\n- Last updated:\n\n## Logical network map — MOP 2.6.2\n- Evidence file/link:\n- Last updated:\n\n## Traffic flow overlay — MOP 3.3.5\n- Evidence file/link:\n- Confirmed with NETAD:\n"
     },
     "vulnerability_analysis_log": {
       "title": "Vulnerability Analysis Log (EA15)",
@@ -155,6 +169,43 @@
     "metl_moe_validation_log": {
       "title": "METL MOE Validation Log (TM Sign-off)",
       "content": "TLP:AMBER+STRICT\n\n| MOP ID | MOE Description | TM Validated | Date | Notes |\n|--------|-----------------|--------------|------|-------|\n| 1.1.3 | Mission understood | | | |\n| 2.3.4 | Access granted | | | |\n| 2.5.3 | Baseline adequate | | | |\n| 3.3.7 | 95%+ network map | | | |\n| 4.10.2 | Adversary cleared | | | |\n| 5.3.2 | 100% mitigations | | | |\n| 5.3.3 | Changes documented | | | |\n| 7.1.3 | Professional inbrief | | | |\n| 7.4.2 | 3+ AAR comments | | | |\n"
+    },
+    "reporting_catalog": {
+      "title": "Reporting Template Catalog (START HERE)",
+      "content": "TLP:AMBER+STRICT\n\n# OhCR/DCOE Reporting Templates in IRIS\n\nCopy the template note for each deliverable, fill it in, and save with date/MOP in the title.\n\n| Template | MOP | Owner | Frequency | Location |\n|----------|-----|-------|-----------|----------|\n| SitRep OhCR Internal | 7.2.1 | KM | Daily | `07 - Daily SitRep` |\n| SitRep Customer NETO | 7.2.1 | KM | Daily | `07 - Daily SitRep` |\n| INTSUM | 7.1.2 | ASA | Daily | This library |\n| Informal NETO Update | 3.3.3 | TM/KM | As needed | This library |\n| NETO Network Action Request | 2.3.2, 3.3.4 | TM/NETAD | Per action | This library + `01` tracker |\n| Hunt Status Report | 3.5.3 | INT/DF | Daily | This library |\n| Incident Closure Report | 5.3.1 | KM/DF | Per incident | Child case + `05` |\n| Network Map Status | 2.6.x, 3.3.5 | NETAD | Daily | This library + **Network Topology** view |\n| Vulnerability Finding | 3.4.1 | RMA | Per finding | This library + `03` vuln log |\n| Hardening Recommendation | 4.10.1 | TM/KM | As needed | `06` + this library |\n| Gold Report Outline | 7.4.1 | KM/DTM | End of mission | `08 - Gold Report` |\n| AAR Template | 7.4.2 | TM | End of mission | `09 - AAR and Hotwash` |\n\n**Interactive network map:** Case menu → **Network Topology** (`/case/dcoe/network`)\n"
+    },
+    "intsum_template": {
+      "title": "INTSUM TEMPLATE — Daily Intelligence Summary",
+      "content": "TLP:AMBER+STRICT\n\n# INTSUM — YYYY-MM-DD\n\n## 1. Intelligence Summary (24h)\n-\n\n## 2. Threat/adversary updates\n-\n\n## 3. Changes to prioritized intel requirements\n| PIR | Change | Impact on operations |\n|-----|--------|----------------------|\n| | | |\n\n## 4. Recommended CCIRs for TM\n-\n\n## 5. Customer/fusion source notes\n-\n\n**Routing:** Post to `07 - Daily SitRep` → Daily Inbrief Log. ASA owns MOP 7.1.2.\n"
+    },
+    "informal_neto_update": {
+      "title": "Informal NETO Update Log",
+      "content": "TLP:AMBER\n\n| Date/Time | NETO POC | Topic | OhCR Lead | Follow-up ticket # | In SitRep |\n|-----------|----------|-------|-----------|-------------------|----------|\n| | | | | | |\n\nUse for coordination that does not require formal ticket 1001+.\n"
+    },
+    "neto_network_action_request": {
+      "title": "NETO Network Action Request (EA8)",
+      "content": "TLP:AMBER+STRICT\n\n# Network Action Request\n\n**Ticket #:** (from `01` tracker, ≥1001)\n**Date/Time:**\n**Requested by (SME):**\n**TM/DTM approver:**\n\n## Action requested\n-\n\n## Systems affected\n-\n\n## Risk (L/M/H):\n\n## NETO approver:\n**Approval date/time:**\n\n## Execution notes\n-\n\nAlso add row to `01 - Authority and NETO Access` → NETO Request and Ticket Tracker.\n"
+    },
+    "hunt_status_report": {
+      "title": "Hunt Status Report",
+      "content": "TLP:AMBER+STRICT\n\n# Hunt Status — YYYY-MM-DD\n\n| Child Case ID | Title | Lead SME | Status | Key finding | Next step |\n|---------------|-------|----------|--------|-------------|----------|\n| | | | | | |\n\nLink cases from `05 - Active Incidents Index`. Feeds SitRep section 3.\n"
+    },
+    "incident_closure_report": {
+      "title": "Incident Closure Report",
+      "content": "TLP:AMBER+STRICT\n\n# Incident Closure — [Case ID / Title]\n\n## Summary of incident\n-\n\n## Root cause / adversary actions\n-\n\n## Actions taken\n-\n\n## Evidence links (IRIS)\n-\n\n## Residual risk\n-\n\n## NETO notification (Y/N)\n\n**KM:** ensure artifact log updated (4.6.3). **TM:** validate adversary removal MOE if applicable.\n"
+    },
+    "network_map_status": {
+      "title": "Network Map Status Report",
+      "content": "TLP:AMBER\n\n# Network Map Status — YYYY-MM-DD\n\n## Interactive topology\n- IRIS view: **Network Topology** (`/case/dcoe/network`)\n- Assets mapped: / total assets\n- Last updated by:\n\n## Physical map (2.6.1)\n- Status: Not started / In progress / Complete\n- Evidence link:\n\n## Logical map (2.6.2)\n- Status:\n- Evidence link:\n\n## Traffic flow overlay (3.3.5)\n- Status:\n- NETAD verified:\n\n## MOE 3.3.7 — 95%+ coverage\n- Estimated coverage %:\n- Gaps:\n\nAlso update `03 - Battlespace Enumeration` → Network Map and Overlay Index.\n"
+    },
+    "vulnerability_finding_report": {
+      "title": "Vulnerability Finding Report",
+      "content": "TLP:AMBER\n\n# Vulnerability Finding\n\n**Finding ID:**\n**Date:**\n**Analyst (RMA/NETAD):**\n**Host/Network:**\n**Severity:**\n\n## Description\n-\n\n## Evidence link\n-\n\n## NETO ticket #\n\n## Routed to\n- [ ] Daily SitRep\n- [ ] Gold Report\n- [ ] Hardening recommendations (`06`)\n\nAlso log in `03` → Vulnerability Analysis Log.\n"
+    },
+    "hardening_recommendation_report": {
+      "title": "Hardening Recommendation Report",
+      "content": "TLP:AMBER\n\n# Hardening Recommendation to NETO\n\n**Date:**\n**Author:**\n**Urgency:** Low / Medium / High\n\n## Recommendation\n-\n\n## Affected systems\n-\n\n## Implementation steps\n1.\n\n## NETO discussion (date/POC)\n-\n\n## Status\n- [ ] In SitRep\n- [ ] In Gold Report\n- [ ] NETO approved\n- [ ] Implemented\n\nAlso add row to `06 - Hardening and Mitigations`.\n"
     }
   }
 }
+
