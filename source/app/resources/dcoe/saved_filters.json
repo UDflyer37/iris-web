@@ -1,0 +1,203 @@
+{
+  "version": "1.0",
+  "filter_type": "alerts",
+  "filters": [
+    {
+      "filter_name": "OhCR-DCOE: Open Alert Queue",
+      "filter_description": "TM triage queue — New, Assigned, and In Progress alerts (OhCR/DCOE)",
+      "filter_is_private": false,
+      "filter_data": {
+        "alert_title": "",
+        "alert_description": "",
+        "alert_source": "",
+        "alert_tags": "",
+        "alert_status_id": "",
+        "alert_severity_id": "",
+        "alert_classification_id": "",
+        "alert_customer_id": "",
+        "source_start_date": "",
+        "source_end_date": "",
+        "creation_start_date": "",
+        "creation_end_date": "",
+        "alert_assets": "",
+        "alert_iocs": "",
+        "alert_ids": "",
+        "source_reference": "",
+        "case_id": "",
+        "alert_owner_id": "",
+        "alert_resolution_id": "",
+        "custom_conditions": "[{\"field\": \"alert_status_id\", \"operator\": \"in\", \"value\": [2, 3, 4]}]"
+      }
+    },
+    {
+      "filter_name": "OhCR-DCOE: New Unassigned Alerts",
+      "filter_description": "Alerts awaiting TM assignment",
+      "filter_is_private": false,
+      "filter_data": {
+        "alert_title": "",
+        "alert_description": "",
+        "alert_source": "",
+        "alert_tags": "",
+        "alert_status_id": "2",
+        "alert_severity_id": "",
+        "alert_classification_id": "",
+        "alert_customer_id": "",
+        "source_start_date": "",
+        "source_end_date": "",
+        "creation_start_date": "",
+        "creation_end_date": "",
+        "alert_assets": "",
+        "alert_iocs": "",
+        "alert_ids": "",
+        "source_reference": "",
+        "case_id": "",
+        "alert_owner_id": "-1",
+        "alert_resolution_id": "",
+        "custom_conditions": ""
+      }
+    },
+    {
+      "filter_name": "OhCR-DCOE: Exercise Injects",
+      "filter_description": "White-cell / exercise inject alerts tagged 'inject'",
+      "filter_is_private": false,
+      "filter_data": {
+        "alert_title": "",
+        "alert_description": "",
+        "alert_source": "",
+        "alert_tags": "inject",
+        "alert_status_id": "",
+        "alert_severity_id": "",
+        "alert_classification_id": "",
+        "alert_customer_id": "",
+        "source_start_date": "",
+        "source_end_date": "",
+        "creation_start_date": "",
+        "creation_end_date": "",
+        "alert_assets": "",
+        "alert_iocs": "",
+        "alert_ids": "",
+        "source_reference": "",
+        "case_id": "",
+        "alert_owner_id": "",
+        "alert_resolution_id": "",
+        "custom_conditions": ""
+      }
+    },
+    {
+      "filter_name": "OhCR-DCOE: SIEM Detections",
+      "filter_description": "Alerts from SIEM or Security Onion integration",
+      "filter_is_private": false,
+      "filter_data": {
+        "alert_title": "",
+        "alert_description": "",
+        "alert_source": "SIEM",
+        "alert_tags": "siem",
+        "alert_status_id": "",
+        "alert_severity_id": "",
+        "alert_classification_id": "",
+        "alert_customer_id": "",
+        "source_start_date": "",
+        "source_end_date": "",
+        "creation_start_date": "",
+        "creation_end_date": "",
+        "alert_assets": "",
+        "alert_iocs": "",
+        "alert_ids": "",
+        "source_reference": "",
+        "case_id": "",
+        "alert_owner_id": "",
+        "alert_resolution_id": "",
+        "custom_conditions": ""
+      }
+    },
+    {
+      "filter_name": "OhCR-DCOE: High and Critical",
+      "filter_description": "Priority escalations for TM review",
+      "filter_is_private": false,
+      "filter_data": {
+        "alert_title": "",
+        "alert_description": "",
+        "alert_source": "",
+        "alert_tags": "",
+        "alert_status_id": "",
+        "alert_severity_id": "",
+        "alert_classification_id": "",
+        "alert_customer_id": "",
+        "source_start_date": "",
+        "source_end_date": "",
+        "creation_start_date": "",
+        "creation_end_date": "",
+        "alert_assets": "",
+        "alert_iocs": "",
+        "alert_ids": "",
+        "source_reference": "",
+        "case_id": "",
+        "alert_owner_id": "",
+        "alert_resolution_id": "",
+        "custom_conditions": "[{\"field\": \"alert_severity_id\", \"operator\": \"in\", \"value\": [5, 6]}]"
+      }
+    },
+    {
+      "filter_name": "OhCR-DCOE: Cyber Shield Mission",
+      "filter_description": "Alerts tagged for Cyber Shield exercise tracking",
+      "filter_is_private": false,
+      "filter_data": {
+        "alert_title": "",
+        "alert_description": "",
+        "alert_source": "",
+        "alert_tags": "cyber-shield",
+        "alert_status_id": "",
+        "alert_severity_id": "",
+        "alert_classification_id": "",
+        "alert_customer_id": "",
+        "source_start_date": "",
+        "source_end_date": "",
+        "creation_start_date": "",
+        "creation_end_date": "",
+        "alert_assets": "",
+        "alert_iocs": "",
+        "alert_ids": "",
+        "source_reference": "",
+        "case_id": "",
+        "alert_owner_id": "",
+        "alert_resolution_id": "",
+        "custom_conditions": ""
+      }
+    }
+  ],
+  "task_filters": {
+    "description": "Use these strings in the Case > Tasks column search box (DataTables filter)",
+    "presets": [
+      {
+        "name": "TM Report MOPs (21)",
+        "task_tags_search": "tm-checklist-report",
+        "use": "Mission case > Tasks tab > filter Tags column"
+      },
+      {
+        "name": "TM MOE Gates",
+        "task_tags_search": "tm-checklist-moe",
+        "use": "Mission case > Tasks tab > filter Tags column"
+      },
+      {
+        "name": "Daily SitRep task",
+        "task_tags_search": "mop-7.2.1",
+        "use": "Close MOP 7.2.1 before end of day"
+      },
+      {
+        "name": "Gold Report task",
+        "task_tags_search": "mop-7.4.1",
+        "use": "Last day outbrief deliverable"
+      },
+      {
+        "name": "NETO documentation",
+        "task_tags_search": "mop-3.3.4",
+        "use": "Network action ticketing compliance"
+      },
+      {
+        "name": "KM-owned METL",
+        "task_tags_search": "analyst-km",
+        "use": "Knowledge Manager task queue"
+      }
+    ]
+  }
+}
