@@ -1,0 +1,160 @@
+{
+  "version": "1.0",
+  "source": "OhCR IR Operators Guide Rev12g / EA21 Operational Reporting (note equivalents)",
+  "note_directories": [
+    {
+      "title": "00 - Mission Orders",
+      "notes": ["warno_opord_log", "orders_receipt_tracker"]
+    },
+    {
+      "title": "01 - Authority and NETO Access",
+      "notes": ["neto_access_tracker", "nda_moa_log"]
+    },
+    {
+      "title": "02 - Mission Planning",
+      "notes": ["mission_planning_whiteboard", "intel_requirements", "coa_development"]
+    },
+    {
+      "title": "03 - Battlespace Enumeration",
+      "notes": ["network_map_index", "vulnerability_analysis_log"]
+    },
+    {
+      "title": "04 - Key Terrain and Risk",
+      "notes": ["protect_surface_matrix", "cyber_defense_analysis", "critical_assets_register"]
+    },
+    {
+      "title": "05 - Hunt and Incident Response",
+      "notes": ["active_incidents_index", "artifact_documentation_log"]
+    },
+    {
+      "title": "06 - Hardening and Mitigations",
+      "notes": ["hardening_recommendations", "remediation_plan", "adversary_removal_log"]
+    },
+    {
+      "title": "07 - Daily SitRep",
+      "notes": ["sitrep_ohcr_template", "sitrep_customer_template", "daily_inbrief_log"]
+    },
+    {
+      "title": "08 - Gold Report",
+      "notes": ["gold_report_outline", "detailed_recommendations", "opsec_decisions_log"]
+    },
+    {
+      "title": "09 - AAR and Hotwash",
+      "notes": ["aar_template", "lessons_learned"]
+    },
+    {
+      "title": "METL Evidence Index",
+      "notes": ["metl_report_mop_index", "metl_moe_validation_log"]
+    }
+  ],
+  "templates": {
+    "warno_opord_log": {
+      "title": "WARNO and OPORD Log",
+      "content": "TLP:AMBER+STRICT\n\n## WARNO (EA2)\n- WARNO sent date/time:\n- Recipients notified:\n- Receipt confirmations:\n\n## OPORD (EA3)\n- OPORD received date/time:\n- OPORD disseminated to team:\n- Receipt confirmations:\n\n## Mission identifiers\n- OhCR/DCOE mission ID:\n- OPORD reference:\n- Customer/NETO:\n"
+    },
+    "orders_receipt_tracker": {
+      "title": "Orders Receipt Tracker",
+      "content": "TLP:AMBER+STRICT\n\n| Team Member | Role | WARNO Ack | OPORD Ack | Back-brief Complete |\n|-------------|------|-----------|-----------|---------------------|\n| | TM | | | |\n| | DTM | | | |\n| | KM | | | |\n| | RMA | | | |\n| | NETAD | | | |\n| | DF | | | |\n| | INT | | | |\n| | END | | | |\n| | ASA | | | |\n| | SIEM | | | |\n| | SYSAD | | | |\n"
+    },
+    "neto_access_tracker": {
+      "title": "NETO Request and Ticket Tracker (EA8)",
+      "content": "TLP:AMBER+STRICT\n\n**Next ticket number:** 1001\n\n| Date/Time | Ticket # | Finding/Task | SME | Verifier | Risk (L/M/H) | TM/DTM Approved | NETO Approver | NETO Approval DT |\n|-----------|----------|--------------|-----|----------|--------------|-----------------|---------------|------------------|\n| | | | | | | | | |\n\nDocument all privileged access requests, scan approvals, logging changes, and mitigations here per SOP 2.3.2 and 3.3.4.\n"
+    },
+    "nda_moa_log": {
+      "title": "NDA MOA and Authority Log",
+      "content": "TLP:AMBER+STRICT\n\n## NDA/AUP (EA9)\n- NDA reviewed with team:\n- Signatures collected:\n- MOA reviewed with NETO:\n- MOA returned to leadership:\n\n## Network access status (2.3.4)\n- Access level granted (privileged/standard):\n- IP/terrain info received:\n- Date access effective:\n"
+    },
+    "mission_planning_whiteboard": {
+      "title": "Mission Planning Whiteboard (EA13)",
+      "content": "TLP:AMBER+STRICT\n\n## Limitations (min 1) — MOP 2.7.2\n1.\n\n## Essential Tasks (min 3) — MOP 2.7.3\n1.\n2.\n3.\n\n## Mission Analysis Brief — MOP 2.8.1\n### Specified tasks\n-\n\n### Implied tasks\n-\n\n### Essential tasks\n-\n\n### Limitations, constraints, facts, assumptions — MOE 2.8.5\n-\n\n### CCIRs — MOE 2.8.6\n-\n"
+    },
+    "intel_requirements": {
+      "title": "Intelligence Requirements (EA10)",
+      "content": "TLP:AMBER+STRICT\n\n## Prioritized Intelligence Requirements — MOP 2.4.1\n| Priority | Requirement | Source (Fusion/OSINT) | Status |\n|----------|-------------|----------------------|--------|\n| | | | |\n"
+    },
+    "coa_development": {
+      "title": "COA Development Worksheet (EA14)",
+      "content": "TLP:AMBER+STRICT\n\n## COA Development — MOP 2.8.3\n\n### Course of Action validation\n1. Verify data provided by organization\n2. Focus suspected/infected systems with PII, tax, directory, IT access\n3. Analyze personnel involved in negative actions / local crimes\n4. Analyze AD, VPN, endpoint access controls\n5. Analyze balance of key systems\n6. Analyze all network systems\n\n### Selected COA\n-\n\n### TM approval\n-\n"
+    },
+    "network_map_index": {
+      "title": "Network Map and Overlay Index (EA12)",
+      "content": "TLP:AMBER\n\n## Physical network map — MOP 2.6.1\n- Evidence file/link:\n- Last updated:\n\n## Logical network map — MOP 2.6.2\n- Evidence file/link:\n- Last updated:\n\n## Traffic flow overlay — MOP 3.3.5\n- Evidence file/link:\n- Confirmed with NETAD:\n"
+    },
+    "vulnerability_analysis_log": {
+      "title": "Vulnerability Analysis Log (EA15)",
+      "content": "TLP:AMBER\n\n| Date | Host/Network | Finding | Severity | Ticket # | In SitRep | In Gold Report |\n|------|--------------|---------|----------|----------|-----------|----------------|\n| | | | | | | |\n"
+    },
+    "protect_surface_matrix": {
+      "title": "Protect Surface Matrix (EA4)",
+      "content": "TLP:AMBER+STRICT\n\n## Data\n-\n\n## Applications\n-\n\n## Assets\n-\n\n## Services\n-\n"
+    },
+    "cyber_defense_analysis": {
+      "title": "Cyber Defense Analysis and 5x5 Risk Matrix (EA5)",
+      "content": "TLP:AMBER+STRICT\n\n## Dynamic Risk Analysis\n| Key System | DRA Rating | Notes |\n|------------|------------|-------|\n| | | |\n\n## 5x5 Risk Matrix reference\n- Worksheet location/evidence:\n"
+    },
+    "critical_assets_register": {
+      "title": "Critical Assets and Key Terrain Register",
+      "content": "TLP:AMBER+STRICT\n\n| Asset | Type | Classification (Friendly/Civilian/Adversary) | Sensitive Data Location | Verified (MOE) |\n|-------|------|---------------------------------------------|-------------------------|----------------|\n| | | | | |\n"
+    },
+    "active_incidents_index": {
+      "title": "Active Incidents Index",
+      "content": "TLP:AMBER+STRICT\n\nLink child IR cases created from alerts. DFIR-IRIS is the system of record.\n\n| Case ID | Title | Status | Lead SME | Linked METL |\n|---------|-------|--------|----------|-------------|\n| | | | | |\n"
+    },
+    "artifact_documentation_log": {
+      "title": "Unauthorized Artifact Documentation (4.6.3)",
+      "content": "TLP:AMBER+STRICT\n\n| Date | Artifact | Host | Analyst | Evidence Link | KM Documented |\n|------|----------|------|---------|---------------|---------------|\n| | | | | | |\n"
+    },
+    "hardening_recommendations": {
+      "title": "Hardening Recommendations to NETO (4.10.1)",
+      "content": "TLP:AMBER\n\n| Date | Recommendation | Urgency | NETO Discussed | In SitRep | In Gold Report |\n|------|----------------|---------|----------------|-----------|----------------|\n| | | | | | |\n"
+    },
+    "remediation_plan": {
+      "title": "Remediation Plan (EA12)",
+      "content": "TLP:AMBER\n\n## High-level itemized mitigations (Gold Report input)\n1.\n\n## Network mitigations (detail)\n-\n\n## Host mitigations (detail)\n-\n\n## Threat actions / Intel (detail)\n-\n"
+    },
+    "adversary_removal_log": {
+      "title": "Adversary Removal Report (5.3.1)",
+      "content": "TLP:AMBER\n\n| Date | Adversary presence | Action taken | Mitigation status | NETO notified | Documented |\n|------|-------------------|--------------|-------------------|---------------|------------|\n| | | | | | |\n"
+    },
+    "sitrep_ohcr_template": {
+      "title": "SitRep TEMPLATE — OhCR Internal (copy per day)",
+      "content": "TLP:AMBER+STRICT\n\n# SitRep — OhCR Internal — YYYY-MM-DD\n\n**DO NOT provide this version to the customer/NETO.**\n\n## 1. Mission Priorities\n1.\n2.\n3.\n\n## 2. Troop to Task\n| Role | SME Name | Assignment | Status |\n|------|----------|------------|--------|\n| TM | | | |\n| DTM | | | |\n| KM | | | |\n\n## 3. Significant Activities (24h)\n-\n\n## 4. Key Terrain / Risk Updates\n-\n\n## 5. Vulnerability and Mitigation Findings\n-\n\n## 6. NETO Coordination\n-\n\n## 7. Open Issues / CCIRs\n-\n\n## 8. Next 24h Priorities\n-\n\n## 9. OhCR Leadership routing\n- Ops Lead:\n- Reservists on orders:\n"
+    },
+    "sitrep_customer_template": {
+      "title": "SitRep TEMPLATE — Customer NETO (copy per day)",
+      "content": "TLP:AMBER\n\n# SitRep — Customer — YYYY-MM-DD\n\n## 1. Mission Priorities\n1.\n2.\n3.\n\n## 2. Team Activities Summary\n-\n\n## 3. Findings\n-\n\n## 4. Recommendations / Mitigations\n-\n\n## 5. Pending NETO Actions/Approvals\n-\n\n## 6. Next 24h Plan\n-\n"
+    },
+    "daily_inbrief_log": {
+      "title": "Daily Inbrief Log (7.1.1)",
+      "content": "TLP:AMBER+STRICT\n\n| Date | INTSUM received (7.1.2) | Priorities briefed | Troop-to-task validated | MOE 7.1.3 |\n|------|-------------------------|-------------------|------------------------|----------|\n| | | | | |\n"
+    },
+    "gold_report_outline": {
+      "title": "Gold Report Outline (EA15) — MOP 7.4.1",
+      "content": "TLP:AMBER\n\n# Gold Report / NDP Outbrief\n\n## Executive Summary\n-\n\n## Network Map (input)\n- Link:\n\n## Vulnerability Analysis Results (input)\n- Link:\n\n## Key Terrain and Analysis (input)\n- Link:\n\n## Risk Mitigation Plan\n### High-level itemized mitigations\n1.\n\n### Network mitigation details\n-\n\n### Host mitigation details\n-\n\n### Threat action details (Intel)\n-\n\n## OPSEC decisions (if any)\n-\n"
+    },
+    "detailed_recommendations": {
+      "title": "Detailed Recommendations (5.5.2)",
+      "content": "TLP:AMBER\n\nRecommendations for immediate NETO implementation and outbrief presentation.\n\n| # | Recommendation | Type (Net/Host/Intel) | Priority | NETO Approval | Implemented |\n|---|----------------|----------------------|----------|---------------|-------------|\n| | | | | | |\n"
+    },
+    "opsec_decisions_log": {
+      "title": "OPSEC Decisions Log",
+      "content": "TLP:AMBER+STRICT\n\nPer SOP: TM documents OPSEC restrictions with justification and duration in Gold Report.\n\n| Date | Decision | Justification | Duration | Communicated to NETO |\n|------|----------|---------------|----------|----------------------|\n| | | | | |\n"
+    },
+    "aar_template": {
+      "title": "AAR Template (EA21) — MOP 7.4.2 min 3 comments",
+      "content": "TLP:AMBER+STRICT\n\n## AAR Comment 1\n- What was supposed to happen:\n- What actually happened:\n- Why:\n- Recommendation:\n\n## AAR Comment 2\n- What was supposed to happen:\n- What actually happened:\n- Why:\n- Recommendation:\n\n## AAR Comment 3\n- What was supposed to happen:\n- What actually happened:\n- Why:\n- Recommendation:\n\n## Daily Hotwash notes\n-\n"
+    },
+    "lessons_learned": {
+      "title": "Lessons Learned Register",
+      "content": "TLP:AMBER+STRICT\n\n| Date | Category | Observation | Action Item | Owner |\n|------|----------|-------------|-------------|-------|\n| | | | | |\n"
+    },
+    "metl_report_mop_index": {
+      "title": "METL Report MOP Evidence Index",
+      "content": "TLP:AMBER+STRICT\n\nTrack all 21 Report-type MOPs. Link task ID or note when complete.\n\n| MOP ID | Description | Owner | Evidence Link | Complete |\n|--------|-------------|-------|---------------|----------|\n| 1.1.1 | Alert staff | TM | | |\n| 2.2.1 | Operational environment | DTM/RMA | | |\n| 2.2.2 | Environmental effects | DTM/RMA | | |\n| 2.3.2 | Network access request | TM/RMA | | |\n| 2.3.3 | NDA | TM | | |\n| 2.4.1 | Intel requirements | ASA | | |\n| 2.5.1 | Baseline documentation request | TM | | |\n| 2.6.1 | Physical network map | NETAD | | |\n| 2.6.2 | Logical network map | NETAD | | |\n| 2.7.2 | Mission limitation | TM | | |\n| 2.8.1 | MA brief | TM | | |\n| 2.8.3 | COA direction | TM | | |\n| 3.3.4 | Network actions documented | TM/RMA | | |\n| 3.3.5 | Network overlay | NETAD | | |\n| 3.5.3 | DFIR threat detection | DTM/DF | | |\n| 4.10.1 | Hardening recommendations | TM/KM | | |\n| 5.3.1 | Adversary removal report | KM/RMA | | |\n| 5.5.2 | Mitigation recommendations | TM | | |\n| 7.2.1 | Daily SitRep | TM/KM | | |\n| 7.4.1 | Gold Report outbrief | TM/DTM/KM | | |\n| 7.4.2 | AAR comments (min 3) | TM | | |\n"
+    },
+    "metl_moe_validation_log": {
+      "title": "METL MOE Validation Log (TM Sign-off)",
+      "content": "TLP:AMBER+STRICT\n\n| MOP ID | MOE Description | TM Validated | Date | Notes |\n|--------|-----------------|--------------|------|-------|\n| 1.1.3 | Mission understood | | | |\n| 2.3.4 | Access granted | | | |\n| 2.5.3 | Baseline adequate | | | |\n| 3.3.7 | 95%+ network map | | | |\n| 4.10.2 | Adversary cleared | | | |\n| 5.3.2 | 100% mitigations | | | |\n| 5.3.3 | Changes documented | | | |\n| 7.1.3 | Professional inbrief | | | |\n| 7.4.2 | 3+ AAR comments | | | |\n"
+    }
+  }
+}

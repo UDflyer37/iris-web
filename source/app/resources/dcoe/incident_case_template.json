@@ -1,0 +1,61 @@
+{
+  "name": "OhCR-DCOE-INCIDENT",
+  "display_name": "OhCR/DCOE Incident Case",
+  "description": "Child investigation case for hunt/IR activities during an OhCR or DCOE response mission. Link to the master mission case.",
+  "author": "OhCR/DCOE Bootstrap",
+  "title_prefix": "[INCIDENT]",
+  "summary": "\n\n## Incident case\nLink this case to the parent OhCR/DCOE mission case. Document IOCs, timeline, evidence, and root cause per SOP Core Task 4.",
+  "tags": ["ohcr", "dcoe", "incident", "hunt"],
+  "tasks": [
+    {
+      "title": "[4.6.1] Search for adversarial and anomalous behavior",
+      "description": "METL 4.6.1 | Analyst: DF/END/INT/NETAD | Document findings in timeline and IOCs.",
+      "tags": ["metl", "4.6.1", "action", "hunt"]
+    },
+    {
+      "title": "[4.6.2] Locate unauthorized executables",
+      "description": "METL 4.6.2 | Analyst: DF/END",
+      "tags": ["metl", "4.6.2", "action", "hunt"]
+    },
+    {
+      "title": "[4.6.3] KM documents unauthorized artifacts",
+      "description": "METL 4.6.3 | Analyst: KM | Update parent mission artifact log.",
+      "tags": ["metl", "4.6.3", "action", "km"]
+    },
+    {
+      "title": "[4.8.1] Root cause analysis / initial infection vector",
+      "description": "METL 4.8.1 | Analyst: DF/END | EA19 Root Cause.",
+      "tags": ["metl", "4.8.1", "action", "rca"]
+    },
+    {
+      "title": "[4.10.1] Hardening recommendations from incident",
+      "description": "METL 4.10.1 | Report | Feed parent mission SitRep and Gold Report.",
+      "tags": ["metl", "4.10.1", "report"]
+    },
+    {
+      "title": "[5.3.1] Report adversarial presence removal",
+      "description": "METL 5.3.1 | Analyst: KM/RMA | Report",
+      "tags": ["metl", "5.3.1", "report"]
+    }
+  ],
+  "note_directories": [
+    {
+      "title": "Incident Summary",
+      "notes": [
+        {
+          "title": "Incident Overview",
+          "content": "TLP:AMBER+STRICT\n\n## Incident summary\n- Detection source:\n- Initial alert time:\n- Affected assets:\n- Current status:\n\n## Parent mission case link\n- Mission case ID:\n"
+        }
+      ]
+    },
+    {
+      "title": "Root Cause Analysis",
+      "notes": [
+        {
+          "title": "RCA Worksheet (EA19)",
+          "content": "TLP:AMBER+STRICT\n\n## Initial infection vector\n-\n\n## Timeline of compromise\n-\n\n## Scope of adversary access\n-\n"
+        }
+      ]
+    }
+  ]
+}
