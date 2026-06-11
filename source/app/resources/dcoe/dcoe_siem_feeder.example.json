@@ -1,0 +1,38 @@
+{
+  "iris_url": "https://192.168.1.50",
+  "iris_api_key": "PASTE-dcoe-siem-api-KEY-HERE",
+  "verify_tls": false,
+  "default_customer_id": 1,
+  "default_status": "New",
+  "default_severity": "Medium",
+  "default_source": "SIEM",
+  "default_tags": "ohcr,dcoe,siem,cyber-shield",
+  "severity_ids": {
+    "unspecified": 1,
+    "informational": 2,
+    "low": 3,
+    "medium": 4,
+    "high": 5,
+    "critical": 6
+  },
+  "status_ids": {
+    "unspecified": 1,
+    "new": 2,
+    "assigned": 3,
+    "in progress": 4,
+    "pending": 5,
+    "closed": 6,
+    "merged": 7,
+    "escalated": 8
+  },
+  "ioc_type_ids": {
+    "ip-src": 0,
+    "domain": 0,
+    "filename": 0,
+    "sha256": 0
+  },
+  "asset_type_ids": {
+    "Windows - Computer": 9
+  },
+  "notes": "Replace iris_api_key after bootstrap (dcoe-siem-api user). Set ioc_type_ids from Manage > IOC Types if using IOC enrichment. asset_type_ids from Manage > Asset Types."
+}
