@@ -17,6 +17,7 @@
 #  Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 # Python modules
+import os
 
 # Flask modules
 
@@ -112,13 +113,14 @@ app.register_blueprint(alerts_blueprint)
 app.register_blueprint(api_blueprint)
 app.register_blueprint(demo_blueprint)
 
-try:
+if os.environ.get("IRIS_BOOTSTRAP_MODE") != "1":
+    try:
 
-    run_post_init(development=app.config["DEVELOPMENT"])
+        run_post_init(development=app.config["DEVELOPMENT"])
 
-except Exception as e:
-    app.logger.exception(f"Post init failed. IRIS not started")
-    raise e
+    except Exception as e:
+        app.logger.exception(f"Post init failed. IRIS not started")
+        raise e
 
 
 # provide login manager with load_user callback

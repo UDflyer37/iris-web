@@ -19,6 +19,9 @@ import secrets
 import sys
 from pathlib import Path
 
+# Bootstrap runs as a standalone script — skip IRIS post_init on import.
+os.environ.setdefault("IRIS_BOOTSTRAP_MODE", "1")
+
 SCRIPT_DIR = Path(__file__).resolve().parent
 if (SCRIPT_DIR.parent / "app").is_dir():
     SOURCE_ROOT = SCRIPT_DIR.parent
@@ -28,6 +31,34 @@ RESOURCES_DIR = SOURCE_ROOT / "app" / "resources" / "dcoe"
 
 if str(SOURCE_ROOT) not in sys.path:
     sys.path.insert(0, str(SOURCE_ROOT))
+
+BOOTSTRAP_RUNTIME_PACKAGE_SPECS = [
+    "graphene==3.3",
+    "graphql-server[flask]==3.0.0b7",
+    "graphene-sqlalchemy==3.0.0rc1",
+]
+
+
+def import_iris_app():
+    """Import Flask app context, installing bootstrap-only deps if the image is older."""
+    import subprocess
+
+    try:
+        from app import app, db
+        return app, db
+    except ModuleNotFoundError as exc:
+        if exc.name not in {"graphql_server", "graphene", "graphene_sqlalchemy"}:
+            raise
+
+        print(
+            "Detected newer IRIS app code on an older container image. "
+            "Installing GraphQL bootstrap dependencies..."
+        )
+        subprocess.check_call(
+            [sys.executable, "-m", "pip", "install", *BOOTSTRAP_RUNTIME_PACKAGE_SPECS]
+        )
+        from app import app, db
+        return app, db
 
 
 def load_json(name: str) -> dict:
@@ -227,6 +258,11 @@ def render_role_operator_note(role_code: str, role: dict) -> str:
         lines.append(f"- {item}")
 
     lines.extend([
+        "",
+        "## Reporting templates",
+        "- Assigned METL tasks include **Report deliverable** instructions in the task description",
+        "- Copy templates from `11 - Reporting Template Library` or role-specific note directories",
+        "- Filter tasks tagged `report-template-*` for deliverables with templates",
         "",
         "## Coordinate with",
         ", ".join(role["coordinates_with"]),
@@ -685,7 +721,7 @@ def bootstrap_user_role_filters(dashboards_data: dict) -> tuple[int, int]:
 
 
 def bootstrap(dry_run: bool = False) -> int:
-    from app import app, db
+    app, db = import_iris_app()
     from app.models.authorization import User
 
     with app.app_context():
