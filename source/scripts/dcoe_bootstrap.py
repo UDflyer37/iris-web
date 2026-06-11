@@ -335,7 +335,7 @@ def bootstrap_users(roles_data: dict, password: str, dry_run: bool) -> dict:
                 user_password=user_password,
                 user_email=user_def["user_email"],
                 user_active=True,
-                is_service_account=user_def.get("is_service_account", False),
+                user_is_service_account=user_def.get("is_service_account", False),
             )
             results["created"].append(login)
 
@@ -428,7 +428,7 @@ def bootstrap(dry_run: bool = False) -> int:
             return 0
 
         for org_def in roles_data["organisations"]:
-            org, _ = get_or_create_organisation(org_def["org_name"], org_def["org_description"])
+            org = get_or_create_organisation(org_def["org_name"], org_def["org_description"])
             print(f"  Organisation ready: {org.org_name}")
 
         for group_def in roles_data["groups"]:
