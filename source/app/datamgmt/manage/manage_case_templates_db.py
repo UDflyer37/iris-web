@@ -187,6 +187,16 @@ def case_template_populate_tasks(case: Cases, case_template: CaseTemplate):
             task = task_schema.load(mapped_task_template)
 
             assignee_id_list = []
+            if task_template.get('assignee_logins'):
+                from app.models.authorization import User
+                for login in task_template['assignee_logins']:
+                    assignee = User.query.filter(User.user == login).first()
+                    if assignee and assignee.id not in assignee_id_list:
+                        assignee_id_list.append(assignee.id)
+            elif task_template.get('assignee_ids'):
+                assignee_id_list = [
+                    assignee_id for assignee_id in task_template['assignee_ids'] if assignee_id
+                ]
 
             ctask = add_task(task=task,
                              assignee_id_list=assignee_id_list,

@@ -1,0 +1,49 @@
+{
+  "format": "dcoe-network-topology",
+  "version": 2,
+  "case_name": "Example Mission",
+  "exported_at": "2026-06-11T00:00:00Z",
+  "nodes": [
+    {
+      "id": "asset-1",
+      "label": "Perimeter FW",
+      "group": "perimeter",
+      "color": "#ff7f7f",
+      "asset_ip": "10.10.0.1",
+      "services": [
+        {"port": "443", "protocol": "tcp", "service": "https", "state": "open"},
+        {"port": "22", "protocol": "tcp", "service": "ssh", "state": "filtered"}
+      ],
+      "ioc_ids": [],
+      "x": 120,
+      "y": 80,
+      "comments": []
+    },
+    {
+      "id": "asset-2",
+      "label": "DC-01",
+      "group": "server",
+      "color": "#7be141",
+      "asset_ip": "10.10.10.10",
+      "services": [
+        {"port": "88", "protocol": "tcp", "service": "kerberos", "state": "open"},
+        {"port": "389", "protocol": "tcp", "service": "ldap", "state": "open"}
+      ],
+      "ioc_ids": [],
+      "x": 360,
+      "y": 220,
+      "comments": []
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge-1",
+      "from": "asset-1",
+      "to": "asset-2",
+      "label": "internal traffic",
+      "protocol": "tcp",
+      "port": "445",
+      "comments": []
+    }
+  ]
+}

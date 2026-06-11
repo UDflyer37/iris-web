@@ -47,11 +47,60 @@ def permission_mask(permission_names: list[str]) -> int:
     return mask
 
 
-def metl_task_to_template_task(entry: dict) -> dict:
+ROLE_LOGIN_MAP = {
+    "TM": "dcoe-tm",
+    "DTM": "dcoe-dtm",
+    "KM": "dcoe-km",
+    "RMA": "dcoe-rma",
+    "NETAD": "dcoe-netad",
+    "DF": "dcoe-df",
+    "INT": "dcoe-int",
+    "END": "dcoe-end",
+    "ASA": "dcoe-asa",
+    "SIEM": "dcoe-siem",
+    "SYSAD": "dcoe-sysad",
+}
+
+ALL_TEAM_LOGINS = list(ROLE_LOGIN_MAP.values())
+
+
+def build_mop_report_map(reporting_data: dict) -> dict:
+    mop_map = {}
+    for template in reporting_data.get("templates", []):
+        for mop_id in template.get("mop_ids", []):
+            mop_map[mop_id] = template
+    return mop_map
+
+
+def resolve_task_assignees(leader: str, analyst: str) -> list[str]:
+    logins = []
+    leader = (leader or "").strip()
+    analyst = (analyst or "").strip()
+
+    if leader and leader in ROLE_LOGIN_MAP:
+        logins.append(ROLE_LOGIN_MAP[leader])
+
+    if analyst == "ALL":
+        for login in ALL_TEAM_LOGINS:
+            if login not in logins:
+                logins.append(login)
+    elif analyst and analyst in ROLE_LOGIN_MAP:
+        login = ROLE_LOGIN_MAP[analyst]
+        if login not in logins:
+            logins.append(login)
+
+    if not logins:
+        logins.append(ROLE_LOGIN_MAP["TM"])
+    return logins
+
+
+def metl_task_to_template_task(entry: dict, mop_report_map: dict | None = None) -> dict:
     leader = entry.get("leader") or "—"
     analyst = entry.get("analyst") or "—"
     evidence = entry.get("evidence_type", "")
     comments = entry.get("comments", "")
+    leader_code = leader if leader != "—" else ""
+    analyst_code = analyst if analyst not in ("—", "") else ""
 
     description = (
         f"METL {entry['mop_id']} | {entry['core_task']} / {entry['category']}\n"
@@ -61,6 +110,16 @@ def metl_task_to_template_task(entry: dict) -> dict:
     if comments:
         description += f"\n\nSOP note: {comments}"
 
+    report_template = None
+    if mop_report_map:
+        report_template = mop_report_map.get(entry["mop_id"])
+    if report_template:
+        note_ref = report_template.get("note_ref") or "11 - Reporting Template Library"
+        description += (
+            f"\n\n**Report deliverable:** Copy `{report_template['title']}` "
+            f"from `{note_ref}` and save your completed version with date/MOP in the title."
+        )
+
     tags = [
         "metl",
         "ohcr",
@@ -69,20 +128,25 @@ def metl_task_to_template_task(entry: dict) -> dict:
         evidence.lower(),
         f"cat-{entry['category'].lower().replace(' ', '-')}",
     ]
-    if leader:
-        tags.append(f"leader-{leader.lower().replace('/', '-')}")
-    if analyst:
-        tags.append(f"analyst-{analyst.lower().replace('/', '-').replace('+', '')}")
+    if leader_code:
+        tags.append(f"leader-{leader_code.lower().replace('/', '-')}")
+    if analyst_code:
+        tags.append(f"analyst-{analyst_code.lower().replace('/', '-').replace('+', '')}")
 
     if evidence == "Report":
         tags.append("tm-checklist-report")
     elif evidence == "MOE":
         tags.append("tm-checklist-moe")
 
+    if report_template:
+        tags.append(f"report-template-{report_template['key']}")
+
     return {
         "title": f"[{entry['mop_id']}] {entry['description'][:120]}",
         "description": description,
         "tags": tags,
+        "assignee_logins": resolve_task_assignees(leader_code, analyst_code),
+        "report_template_key": report_template["key"] if report_template else None,
     }
 
 
@@ -164,6 +228,11 @@ def render_role_operator_note(role_code: str, role: dict) -> str:
 
     lines.extend([
         "",
+        "## Reporting templates",
+        "- Assigned METL tasks include **Report deliverable** instructions in the task description",
+        "- Copy templates from `11 - Reporting Template Library` or role-specific note directories",
+        "- Filter tasks tagged `report-template-*` for deliverables with templates",
+        "",
         "## Coordinate with",
         ", ".join(role["coordinates_with"]),
         "",
@@ -227,8 +296,17 @@ def build_role_guide_directory(dashboards: dict) -> dict:
     }
 
 
-def build_mission_case_template(metl_data: dict, note_data: dict, dashboards_data: dict) -> dict:
-    tasks = [metl_task_to_template_task(entry) for entry in metl_data["tasks"]]
+def build_mission_case_template(
+    metl_data: dict,
+    note_data: dict,
+    dashboards_data: dict,
+    reporting_data: dict,
+) -> dict:
+    mop_report_map = build_mop_report_map(reporting_data)
+    tasks = [
+        metl_task_to_template_task(entry, mop_report_map)
+        for entry in metl_data["tasks"]
+    ]
     directories = [build_role_guide_directory(dashboards_data)]
     directories.extend(build_note_directories(note_data))
 
@@ -466,6 +544,11 @@ def bootstrap_custom_attributes():
                 "mandatory": False,
                 "value": "",
             },
+            "Report template": {
+                "type": "input_string",
+                "mandatory": False,
+                "value": "",
+            },
             "NETO ticket number": {
                 "type": "input_string",
                 "mandatory": False,
@@ -622,9 +705,12 @@ def bootstrap(dry_run: bool = False) -> int:
         note_data = load_json("note_templates.json")
         roles_data = load_json("roles.json")
         dashboards_data = load_json("role_dashboards.json")
+        reporting_data = load_json("reporting_templates.json")
         incident_template = load_json("incident_case_template.json")
         filters_data = load_json("saved_filters.json")
-        mission_template = build_mission_case_template(metl_data, note_data, dashboards_data)
+        mission_template = build_mission_case_template(
+            metl_data, note_data, dashboards_data, reporting_data
+        )
 
         admin = User.query.filter(User.user == app.config.get("IRIS_ADM_USERNAME", "administrator")).first()
         if not admin:

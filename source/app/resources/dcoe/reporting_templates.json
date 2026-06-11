@@ -110,6 +110,42 @@
       "roles": ["TM", "KM", "NETAD", "END"],
       "frequency": "as_needed",
       "description": "Formal hardening recommendation to NETO"
+    },
+    {
+      "key": "detailed_recommendations",
+      "title": "Detailed Recommendations (5.5.2)",
+      "mop_ids": ["5.5.2"],
+      "roles": ["TM", "KM"],
+      "frequency": "end_of_mission",
+      "description": "Immediate NETO implementation recommendations",
+      "note_ref": "08 - Gold Report"
+    },
+    {
+      "key": "mission_planning_whiteboard",
+      "title": "Mission Planning Whiteboard (EA13)",
+      "mop_ids": ["2.7.2", "2.8.1", "2.8.3"],
+      "roles": ["DTM", "TM"],
+      "frequency": "planning",
+      "description": "Mission analysis, limitations, and COA development",
+      "note_ref": "02 - Mission Planning"
+    },
+    {
+      "key": "intel_requirements",
+      "title": "Intelligence Requirements (EA10)",
+      "mop_ids": ["2.4.1"],
+      "roles": ["ASA", "DTM"],
+      "frequency": "planning",
+      "description": "Prioritized intelligence requirements",
+      "note_ref": "02 - Mission Planning"
+    },
+    {
+      "key": "nda_moa_log",
+      "title": "NDA MOA and Authority Log",
+      "mop_ids": ["2.3.3"],
+      "roles": ["TM"],
+      "frequency": "start_of_mission",
+      "description": "NDA and MOA tracking with NETO",
+      "note_ref": "01 - Authority and NETO Access"
     }
   ]
 }

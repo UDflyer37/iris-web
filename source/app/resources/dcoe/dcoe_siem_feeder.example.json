@@ -6,7 +6,7 @@
   "default_status": "New",
   "default_severity": "Medium",
   "default_source": "SIEM",
-  "default_tags": "ohcr,dcoe,siem,cyber-shield",
+  "default_tags": "ohcr,dcoe,siem",
   "severity_ids": {
     "unspecified": 1,
     "informational": 2,

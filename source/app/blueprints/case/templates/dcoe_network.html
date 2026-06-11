@@ -4,9 +4,21 @@
 {% block stylesheets %}
 <link href="/static/assets/css/vis.min.css" rel="stylesheet" type="text/css" />
 <style>
-  #dcoe-network-container { height: calc(100vh - 260px); min-height: 480px; border: 1px solid #e0e0e0; border-radius: 4px; }
-  #dcoe-network-sidebar { max-height: calc(100vh - 260px); overflow-y: auto; }
-  .dcoe-zone-badge { font-size: 11px; }
+  #dcoe-network-container { height: calc(100vh - 280px); min-height: 500px; border: 1px solid #e0e0e0; border-radius: 4px; }
+  #dcoe-asset-palette, #dcoe-network-sidebar { max-height: calc(100vh - 280px); overflow-y: auto; }
+  .dcoe-asset-chip {
+    border: 1px solid #d7d7d7;
+    border-radius: 4px;
+    padding: 8px;
+    margin-bottom: 8px;
+    cursor: grab;
+    background: #fafafa;
+  }
+  .dcoe-asset-chip:active { cursor: grabbing; }
+  .dcoe-asset-chip small { display: block; color: #666; }
+  .dcoe-drop-active { outline: 2px dashed #4e9cff; }
+  .dcoe-service-row { display: flex; gap: 4px; margin-bottom: 4px; }
+  .dcoe-ioc-link { display: block; font-size: 12px; }
 </style>
 {% endblock stylesheets %}
 
@@ -19,22 +31,21 @@
       <ul class="container-fluid mt-3 mb--2">
         <ul class="navbar-nav topbar-nav ml-md-auto align-items-center page-navigation page-navigation-style-2 page-navigation-secondary">
           <li class="nav-item ml-2">
-            <span class="text-white text-sm mr-2">OhCR/DCOE Network Topology — linked to case assets</span>
+            <span class="text-white text-sm mr-2">Network Topology — drag assets, link IOCs, export/import JSON</span>
           </li>
           <li class="nav-item hidden-caret">
-            <button class="btn btn-primary btn-sm" id="dcoe-network-save" type="button">
-              <span class="menu-title">Save diagram</span>
-            </button>
+            <button class="btn btn-primary btn-sm" id="dcoe-network-save" type="button">Save</button>
           </li>
           <li class="nav-item hidden-caret ml-2">
-            <button class="btn btn-light btn-sm" id="dcoe-network-import" type="button">
-              <span class="menu-title">Import all assets</span>
-            </button>
+            <button class="btn btn-light btn-sm" id="dcoe-network-import-all" type="button">Import all assets</button>
           </li>
           <li class="nav-item hidden-caret ml-2">
-            <button class="btn btn-light btn-sm" id="dcoe-network-add-node" type="button">
-              <span class="menu-title">Add node</span>
-            </button>
+            <button class="btn btn-light btn-sm" id="dcoe-network-export" type="button">Export JSON</button>
+          </li>
+          <li class="nav-item hidden-caret ml-2">
+            <label class="btn btn-light btn-sm mb-0">
+              Import JSON <input type="file" id="dcoe-network-import-file" accept="application/json,.json" hidden />
+            </label>
           </li>
         </ul>
       </ul>
@@ -44,65 +55,101 @@
     {{ form.hidden_tag() }}
     <div class="page-inner">
       <div class="row">
-        <div class="col-md-9">
+        <div class="col-md-2">
+          <div class="card" id="dcoe-asset-palette">
+            <div class="card-header"><h4 class="card-title mb-0">Asset palette</h4></div>
+            <div class="card-body">
+              <small class="text-muted d-block mb-2">Drag onto diagram or click +</small>
+              <div id="dcoe-asset-list"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
           <div class="card">
             <div class="card-body">
               <div id="dcoe-network-container"></div>
               <small class="text-muted mt-2 d-block">
-                Drag nodes to reposition. Click a node to inspect, comment, or link an asset. Connect nodes using Add edge.
+                Drag nodes to reposition. Drop assets from the palette. Edge labels show protocol/port.
               </small>
             </div>
           </div>
         </div>
         <div class="col-md-3">
           <div class="card" id="dcoe-network-sidebar">
-            <div class="card-header">
-              <h4 class="card-title mb-0" id="dcoe-panel-title">Diagram inspector</h4>
-            </div>
+            <div class="card-header"><h4 class="card-title mb-0" id="dcoe-panel-title">Inspector</h4></div>
             <div class="card-body">
-              <p class="text-muted" id="dcoe-panel-empty">Select a node or edge to view details and comments.</p>
+              <p class="text-muted" id="dcoe-panel-empty">Select a node or edge.</p>
               <div id="dcoe-panel-content" style="display:none;">
-                <div class="form-group">
-                  <label>Label</label>
-                  <input class="form-control form-control-sm" id="dcoe-node-label" type="text" />
+                <div id="dcoe-node-fields">
+                  <div class="form-group">
+                    <label>Label</label>
+                    <input class="form-control form-control-sm" id="dcoe-node-label" type="text" />
+                  </div>
+                  <div class="form-group">
+                    <label>IP address</label>
+                    <input class="form-control form-control-sm" id="dcoe-node-ip" type="text" />
+                  </div>
+                  <div class="form-group">
+                    <label>Zone</label>
+                    <select class="form-control form-control-sm" id="dcoe-node-zone">
+                      <option value="perimeter">Perimeter</option>
+                      <option value="dmz">DMZ</option>
+                      <option value="internal">Internal</option>
+                      <option value="server">Server</option>
+                      <option value="endpoint">Endpoint</option>
+                      <option value="cloud">Cloud</option>
+                      <option value="unknown">Unknown</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Linked asset</label>
+                    <select class="form-control form-control-sm" id="dcoe-node-asset">
+                      <option value="">— None —</option>
+                    </select>
+                  </div>
+                  <div class="form-group">
+                    <label>Open services / ports</label>
+                    <div id="dcoe-services-list"></div>
+                    <button class="btn btn-sm btn-outline-secondary mt-1" id="dcoe-add-service" type="button">Add service</button>
+                  </div>
+                  <div class="form-group">
+                    <label>Linked IOCs</label>
+                    <div id="dcoe-ioc-list" class="mb-2"></div>
+                    <select class="form-control form-control-sm" id="dcoe-ioc-picker">
+                      <option value="">Link case IOC…</option>
+                    </select>
+                    <a class="btn btn-sm btn-outline-primary mt-2" href="/case/ioc" id="dcoe-open-iocs" target="_blank">Open IOC tab</a>
+                  </div>
                 </div>
-                <div class="form-group">
-                  <label>Zone</label>
-                  <select class="form-control form-control-sm" id="dcoe-node-zone">
-                    <option value="perimeter">Perimeter</option>
-                    <option value="dmz">DMZ</option>
-                    <option value="internal">Internal</option>
-                    <option value="server">Server</option>
-                    <option value="endpoint">Endpoint</option>
-                    <option value="cloud">Cloud</option>
-                    <option value="unknown">Unknown</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label>Linked asset</label>
-                  <select class="form-control form-control-sm" id="dcoe-node-asset">
-                    <option value="">— None —</option>
-                  </select>
-                </div>
-                <div class="form-group" id="dcoe-asset-link-group" style="display:none;">
-                  <a class="btn btn-sm btn-outline-primary" href="#" id="dcoe-open-asset" target="_blank">Open asset in case</a>
+                <div id="dcoe-edge-fields" style="display:none;">
+                  <div class="form-group">
+                    <label>Description</label>
+                    <input class="form-control form-control-sm" id="dcoe-edge-label" type="text" />
+                  </div>
+                  <div class="form-group">
+                    <label>Protocol</label>
+                    <input class="form-control form-control-sm" id="dcoe-edge-protocol" type="text" placeholder="tcp" />
+                  </div>
+                  <div class="form-group">
+                    <label>Port</label>
+                    <input class="form-control form-control-sm" id="dcoe-edge-port" type="text" placeholder="443" />
+                  </div>
                 </div>
                 <div class="form-group">
                   <label>Comments</label>
                   <div id="dcoe-comments-list" class="mb-2"></div>
-                  <textarea class="form-control form-control-sm" id="dcoe-comment-input" rows="3" placeholder="Add comment on this component"></textarea>
+                  <textarea class="form-control form-control-sm" id="dcoe-comment-input" rows="2" placeholder="Comment on this component"></textarea>
                   <button class="btn btn-sm btn-primary mt-2" id="dcoe-add-comment" type="button">Add comment</button>
-                  <button class="btn btn-sm btn-outline-secondary mt-2" id="dcoe-push-asset-comment" type="button" style="display:none;">Also post to asset</button>
+                  <button class="btn btn-sm btn-outline-secondary mt-2" id="dcoe-push-asset-comment" type="button" style="display:none;">Post to asset too</button>
                 </div>
                 <button class="btn btn-sm btn-danger" id="dcoe-delete-selection" type="button">Delete selected</button>
               </div>
               <hr />
               <div class="form-group mb-0">
-                <label>Add edge (from → to)</label>
+                <label>Connect nodes</label>
                 <select class="form-control form-control-sm mb-2" id="dcoe-edge-from"></select>
                 <select class="form-control form-control-sm mb-2" id="dcoe-edge-to"></select>
-                <input class="form-control form-control-sm mb-2" id="dcoe-edge-label" type="text" placeholder="Protocol / description" />
-                <button class="btn btn-sm btn-secondary" id="dcoe-add-edge" type="button">Add edge</button>
+                <button class="btn btn-sm btn-secondary" id="dcoe-connect-edge" type="button">Add connection</button>
               </div>
             </div>
           </div>

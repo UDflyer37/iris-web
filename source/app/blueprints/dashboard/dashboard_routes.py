@@ -76,31 +76,35 @@ def logout():
     Logout function. Erase its session and redirect to index i.e login
     :return: Page
     """
-    if session['current_case']:
-        current_user.ctx_case = session['current_case']['case_id']
-        current_user.ctx_human_case = session['current_case']['case_name']
+    username = current_user.user if current_user.is_authenticated else "unknown"
+    current_case = session.get('current_case')
+
+    if current_user.is_authenticated and current_case:
+        current_user.ctx_case = current_case['case_id']
+        current_user.ctx_human_case = current_case['case_name']
         db.session.commit()
 
-    if is_authentication_oidc():
-        if oidc_client.provider_info.get("end_session_endpoint"):
+    if current_user.is_authenticated and is_authentication_oidc():
+        if oidc_client.provider_info.get("end_session_endpoint") and session.get("oidc_state"):
             try:
                 logout_request = oidc_client.construct_EndSessionRequest(state=session["oidc_state"])
                 logout_url = logout_request.request(oidc_client.provider_info["end_session_endpoint"])
-                track_activity("user '{}' is being logged out".format(current_user.user), ctx_less=True, display_in_ui=False)
+                track_activity(f"user '{username}' is being logged out", ctx_less=True, display_in_ui=False)
                 logout_user()
                 session.clear()
                 return redirect(logout_url)
             except GrantError:
                 track_activity(
-                    f"no oidc session found for user '{current_user.user}', skipping oidc provider logout and continuing to logout local user",
+                    f"no oidc session found for user '{username}', skipping oidc provider logout and continuing to logout local user",
                     ctx_less=True,
                     display_in_ui=False
                 )
             except Exception as e:
                 log.error(f"Error logging out: {e}")
-                log.warning(f'Will continue to local logout')
+                log.warning('Will continue to local logout')
 
-    track_activity("user '{}' is being logged out".format(current_user.user), ctx_less=True, display_in_ui=False)
+    if current_user.is_authenticated:
+        track_activity(f"user '{username}' is being logged out", ctx_less=True, display_in_ui=False)
 
     logout_user()
     session.clear()
