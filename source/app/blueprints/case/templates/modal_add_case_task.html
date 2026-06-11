@@ -57,7 +57,12 @@
                                     {{ form.task_title(class='form-control col-md-12 col-sm-12',  autocomplete="off") }}
                                 </div>
                                 <div class="form-group mt-3">
-                                    <label for="task_description" class="placeholder">Description</label>
+                                    <div class="d-flex align-items-center mb-1">
+                                        <label for="task_description" class="placeholder mb-0">Description</label>
+                                        <button type="button" class="btn btn-link btn-sm py-0 ml-2" id="dcoe-toggle-task-desc" style="display:none;">
+                                            Hide description — focus on report
+                                        </button>
+                                    </div>
                                      <div class="md_description_field">
                                         <div class="form-group mt--2">
                                                 <button type="button" class="float-right icon-note btn btn-circle btn-sm mt-2" onclick="edit_in_task_desc();">
@@ -78,6 +83,39 @@
                                                 <div id="target_task_desc"></div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div id="dcoe-task-report-panel" class="form-group mt-3 border-top pt-3" style="display:none;">
+                                    <div class="d-flex align-items-center mb-2">
+                                        <label class="mb-0 mr-2"><i class="fa fa-file-alt"></i> <span id="dcoe-task-report-title">Task Reports</span></label>
+                                        <span class="badge badge-light" id="dcoe-task-report-status">Ready</span>
+                                    </div>
+                                    <div class="alert alert-info py-2 mb-2" id="dcoe-task-report-help-wrap">
+                                        <strong class="small">How to complete a report:</strong>
+                                        <div id="dcoe-task-report-help" class="mt-1"></div>
+                                    </div>
+                                    <div id="dcoe-task-report-tabs" class="mb-2"></div>
+                                    <div class="d-flex align-items-center mb-2 flex-wrap">
+                                        <select id="dcoe-task-report-add-select" class="form-control form-control-sm mr-2" style="max-width:320px;"></select>
+                                        <button type="button" class="btn btn-sm btn-outline-success mr-1" id="dcoe-task-report-add"><i class="fa fa-plus"></i> Add report</button>
+                                        <button type="button" class="btn btn-sm btn-outline-primary mr-1" id="dcoe-task-report-suggested" style="display:none;"></button>
+                                        <button type="button" class="btn btn-sm btn-outline-danger ml-auto" id="dcoe-task-report-remove" disabled><i class="fa fa-times"></i> Remove</button>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div id="dcoe-task-report-form" class="dcoe-task-report-form"></div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <label class="small text-muted">Preview</label>
+                                            <div id="dcoe-task-report-preview" class="dcoe-task-report-preview"><p class="text-muted mb-0">Preview appears here.</p></div>
+                                        </div>
+                                    </div>
+                                    <div class="mt-2 d-flex align-items-center flex-wrap">
+                                        <select id="dcoe-task-report-export-format" class="form-control form-control-sm mr-2" style="max-width:240px;" disabled></select>
+                                        <button type="button" class="btn btn-sm btn-outline-primary mr-2" id="dcoe-task-report-download" disabled>
+                                            <i class="fa fa-download"></i> Export
+                                        </button>
+                                        <a class="btn btn-sm btn-link" id="dcoe-task-report-workspace" href="#">Open in Report Workspace</a>
                                     </div>
                                 </div>
                                 <div class="form-group mt-3">

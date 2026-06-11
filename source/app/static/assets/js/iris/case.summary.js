@@ -114,6 +114,37 @@ function report_template_selector() {
     $('#modal_select_report').modal({ show: true });
 }
 
+function open_report_workspace() {
+    let reportId = null;
+    const picker = $("#select_report");
+    if (picker.length) {
+        try {
+            if (typeof picker.selectpicker === "function") {
+                reportId = picker.selectpicker("val");
+            }
+        } catch (e) { /* ignore */ }
+        if (!reportId) {
+            reportId = picker.val();
+        }
+    }
+
+    let cid = null;
+    if (typeof case_param === "function") {
+        const match = case_param().match(/cid=(\d+)/);
+        if (match) cid = match[1];
+    }
+    if (!cid) {
+        const urlMatch = window.location.search.match(/[?&]cid=(\d+)/);
+        if (urlMatch) cid = urlMatch[1];
+    }
+
+    let url = "/case/dcoe/reports";
+    if (cid) url += "?cid=" + cid;
+    if (reportId) url += (url.indexOf("?") >= 0 ? "&" : "?") + "template_id=" + reportId;
+    window.location.href = url;
+    return false;
+}
+
 function gen_report(safe) {
     url = '/case/report/generate-investigation/' + $("#select_report option:selected").val() + case_param();
     if (safe === true) {

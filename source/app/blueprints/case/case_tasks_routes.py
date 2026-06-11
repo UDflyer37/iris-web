@@ -42,6 +42,7 @@ from app.datamgmt.case.case_tasks_db import get_task
 from app.datamgmt.case.case_tasks_db import get_task_with_assignees
 from app.datamgmt.case.case_tasks_db import get_tasks_status
 from app.datamgmt.case.case_tasks_db import get_tasks_with_assignees
+from app.datamgmt.dcoe.dcoe_ops_db import enrich_tasks_with_dcoe, get_dcoe_ops_context
 from app.datamgmt.case.case_tasks_db import update_task_assignees
 from app.datamgmt.case.case_tasks_db import update_task_status
 from app.datamgmt.manage.manage_attribute_db import get_default_custom_attributes
@@ -75,23 +76,26 @@ def case_tasks(caseid, url_redir):
     form = FlaskForm()
     case = get_case(caseid)
 
-    return render_template("case_tasks.html", case=case, form=form)
+    dcoe_ops = get_dcoe_ops_context(case, current_user)
+    return render_template("case_tasks.html", case=case, form=form, dcoe_ops=dcoe_ops, page="tasks")
 
 
 @case_tasks_blueprint.route('/case/tasks/list', methods=['GET'])
 @ac_api_case_requires(CaseAccessLevel.read_only, CaseAccessLevel.full_access)
 def case_get_tasks(caseid):
+    case = get_case(caseid)
     ct = get_tasks_with_assignees(caseid)
 
     if not ct:
         output = []
     else:
-        output = ct
+        output = enrich_tasks_with_dcoe(case, ct) if case else ct
 
     ret = {
         "tasks_status": get_tasks_status(),
         "tasks": output,
-        "state": get_tasks_state(caseid=caseid)
+        "state": get_tasks_state(caseid=caseid),
+        "dcoe_ops": get_dcoe_ops_context(case, current_user) if case else None,
     }
 
     return response_success("", data=ret)

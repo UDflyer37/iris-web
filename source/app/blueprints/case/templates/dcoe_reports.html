@@ -1,0 +1,173 @@
+{% extends "layouts/default_ext.html" %}
+{% block title %} Report Workspace {% endblock title %}
+
+{% block stylesheets %}
+<style>
+  #dcoe-report-form-panel, #dcoe-report-preview {
+    max-height: calc(100vh - 260px);
+    overflow-y: auto;
+  }
+  #dcoe-report-preview {
+    background: #fff;
+    border: 1px solid #d8dee6;
+    border-radius: 6px;
+    padding: 20px;
+  }
+  #dcoe-report-form-panel {
+    border: 1px solid #d8dee6;
+    border-radius: 6px;
+    padding: 16px;
+    background: #fafbfc;
+  }
+  .dcoe-form-section {
+    background: #fff;
+    border: 1px solid #e6eaef;
+    border-radius: 6px;
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+  .dcoe-form-section h5 {
+    font-size: 15px;
+    margin-bottom: 10px;
+    color: #2c3e50;
+  }
+  .dcoe-form-field { margin-bottom: 10px; }
+  .dcoe-form-field label {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: #495057;
+  }
+  .dcoe-repeatable-instance {
+    background: #fff;
+    border-color: #dfe3e8 !important;
+  }
+  .dcoe-report-item, .dcoe-task-report-item {
+    border: 1px solid #e2e6ea;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    background: #fff;
+  }
+  .dcoe-report-item.active { border-color: #4e9cff; background: #f3f9ff; }
+  #dcoe-report-list, #dcoe-task-report-list { max-height: 220px; overflow-y: auto; }
+  .dcoe-rpt-title { color: #1a237e; margin-bottom: 12px; }
+  .dcoe-rpt-section { color: #37474f; margin-top: 16px; margin-bottom: 8px; }
+  .dcoe-rpt-field { color: #546e7a; margin-top: 10px; }
+  .dcoe-rpt-line { margin-bottom: 4px; }
+</style>
+{% endblock stylesheets %}
+
+{% block content %}
+{% include 'includes/navigation_ext.html' %}
+{% include 'includes/sidenav.html' %}
+<div class="main-panel">
+  <div class="content">
+    <nav class="navbar navbar-header navbar-expand-lg bg-primary-gradient nav-sticky">
+      <ul class="container-fluid mt-3 mb--2">
+        <ul class="navbar-nav topbar-nav ml-md-auto align-items-center page-navigation page-navigation-style-2 page-navigation-secondary">
+          <li class="nav-item ml-2">
+            <span class="text-white text-sm mr-2">Report Workspace — guided forms, no markdown required</span>
+            <span class="badge badge-light" id="dcoe-report-status">Ready</span>
+          </li>
+        </ul>
+      </ul>
+    </nav>
+
+    {% if current_user.is_authenticated %}
+    {{ form.hidden_tag() }}
+    <div class="page-inner">
+      {% include 'dcoe_ops_bar.html' %}
+      <div class="alert alert-info py-2 mb-3">
+        <strong>Quick start:</strong>
+        <div id="dcoe-report-help" class="mt-1"></div>
+      </div>
+      <div class="card mb-3">
+        <div class="card-body py-2">
+          <div class="row">
+            <div class="col-md-4">
+              <label class="mb-1">Report type</label>
+              <select class="form-control form-control-sm" id="dcoe-report-template-select"></select>
+            </div>
+            <div class="col-md-4">
+              <label class="mb-1">Link to task (optional)</label>
+              <select class="form-control form-control-sm" id="dcoe-report-task-select">
+                <option value="">— No task —</option>
+              </select>
+            </div>
+            <div class="col-md-4 d-flex align-items-end">
+              <button class="btn btn-primary btn-sm mr-2" id="dcoe-report-new-draft" type="button">Start new report</button>
+              <button class="btn btn-light btn-sm" id="dcoe-report-refresh" type="button">Refresh</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-3">
+          <div class="card mb-3">
+            <div class="card-header py-2"><h4 class="card-title mb-0" style="font-size:14px;">Saved reports</h4></div>
+            <div class="card-body py-2" id="dcoe-report-list"></div>
+          </div>
+          <div class="card">
+            <div class="card-header py-2">
+              <h4 class="card-title mb-0" style="font-size:14px;">Tasks — click to open reports</h4>
+            </div>
+            <div class="card-body py-2">
+              <input type="text" class="form-control form-control-sm mb-2" id="dcoe-ws-task-search" placeholder="Search tasks…" />
+              <div class="mb-2">
+                <button type="button" class="btn btn-xs btn-primary dcoe-ws-task-filter" data-filter="all">All</button>
+                <button type="button" class="btn btn-xs btn-outline-secondary dcoe-ws-task-filter" data-filter="reports">Report MOPs</button>
+                <button type="button" class="btn btn-xs btn-outline-secondary dcoe-ws-task-filter" data-filter="needed">Needs report</button>
+                <button type="button" class="btn btn-xs btn-outline-secondary dcoe-ws-task-filter" data-filter="in_progress">In progress</button>
+                <button type="button" class="btn btn-xs btn-outline-secondary dcoe-ws-task-filter" data-filter="has_draft">Has draft</button>
+              </div>
+              <div id="dcoe-task-report-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-9">
+          <div class="card mb-2">
+            <div class="card-body py-2 d-flex justify-content-between align-items-center">
+              <div>
+                <strong id="dcoe-report-draft-title">Select or start a report</strong>
+                <small class="text-muted d-block" id="dcoe-report-draft-meta">Fill in the sections below — no Markdown required.</small>
+              </div>
+              <div>
+                <button class="btn btn-success btn-sm" id="dcoe-report-save" type="button" disabled>Save</button>
+                <button class="btn btn-primary btn-sm" id="dcoe-report-attach" type="button" disabled>Attach to task</button>
+                <select class="form-control form-control-sm d-inline-block mr-1" id="dcoe-report-export-format" style="width:auto;max-width:200px;" disabled></select>
+                <button class="btn btn-light btn-sm" id="dcoe-report-download" type="button" disabled>Export</button>
+                <button class="btn btn-danger btn-sm" id="dcoe-report-delete" type="button" disabled>Delete</button>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <label class="mb-1"><i class="fa fa-edit"></i> Fill in sections</label>
+              <div id="dcoe-report-form-panel">
+                <p class="text-muted mb-0">Choose a report type and click <strong>Start new report</strong>, or open a saved report from the left.</p>
+              </div>
+            </div>
+            <div class="col-md-6">
+              <label class="mb-1"><i class="fa fa-eye"></i> Preview</label>
+              <div id="dcoe-report-preview"><p class="text-muted">Your formatted report preview appears here as you type.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+  </div>
+  {% include 'includes/footer.html' %}
+</div>
+{% endblock content %}
+
+{% block javascripts %}
+<script src="/static/assets/js/iris/case.common.js"></script>
+<script src="/static/assets/js/iris/dcoe.report.form.js"></script>
+<script src="/static/assets/js/iris/dcoe.ops.js"></script>
+<script src="/static/assets/js/iris/dcoe.reports.js"></script>
+{% endblock javascripts %}

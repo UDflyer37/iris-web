@@ -68,6 +68,9 @@ function add_task() {
 
             return false;
         })
+        if (typeof dcoeTaskReportHide === "function") {
+            dcoeTaskReportHide();
+        }
         $('#modal_add_task').modal({ show: true });
         $('#task_title').focus();
 
@@ -171,6 +174,9 @@ function edit_task(id) {
         load_menu_mod_options_modal(id, 'task', $("#task_modal_quick_actions"));
         $('#modal_add_task').modal({show:true});
         edit_in_task_desc();
+        if (typeof dcoeTaskReportLoad === "function") {
+            dcoeTaskReportLoad(id);
+        }
   });
 }
 
@@ -242,6 +248,13 @@ function get_tasks() {
                 load_menu_mod_options('task', Table, delete_task);
                 //$('[data-toggle="popover"]').popover();
                 Table.responsive.recalc();
+
+                if (typeof dcoeRefreshOpsBar === "function" && data.data.dcoe_ops) {
+                    dcoeRefreshOpsBar(data.data.dcoe_ops);
+                }
+                if (typeof dcoeInitTaskFilters === "function" && dcoeActiveFilterChipId === "all") {
+                    dcoeInitTaskFilters();
+                }
 
                 $(document)
                     .off('click', '.task_details_link')
@@ -343,7 +356,11 @@ $(document).ready(function(){
                     anchor.html(datak);
                 }
 
-                return anchor.prop('outerHTML');
+                let html = anchor.prop('outerHTML');
+                if (typeof dcoeTaskActionButtons === "function") {
+                    html += dcoeTaskActionButtons(row);
+                }
+                return html;
               }
               return data;
             }
@@ -412,6 +429,18 @@ $(document).ready(function(){
                     return formatTime(data);
                 }
                 return data;
+            }
+          },
+          {
+            "data": "dcoe_report_status",
+            "render": function (data, type, row) {
+                if (type === "display" && typeof dcoeReportStatusBadge === "function") {
+                    return dcoeReportStatusBadge(row);
+                }
+                if (type === "filter" || type === "sort") {
+                    return row.dcoe_report_status || "";
+                }
+                return data || "";
             }
           },
           { "data": "task_tags",

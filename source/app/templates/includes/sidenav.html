@@ -72,6 +72,18 @@
 							</a>
 						</li>
 						<li class="nav-item">
+							<a href="/case/tasks?cid={{session['current_case'].case_id}}">
+								<i class="fa-solid fa-list-check"></i>
+								<span>METL Tasks</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a href="/case/dcoe/reports?cid={{session['current_case'].case_id}}">
+								<i class="fa-solid fa-file-pen"></i>
+								<span>Report Workspace</span>
+							</a>
+						</li>
+						<li class="nav-item">
 							<a href="/case/dcoe/network?cid={{session['current_case'].case_id}}">
 								<i class="fa-solid fa-diagram-project"></i>
 								<span>Network Topology</span>

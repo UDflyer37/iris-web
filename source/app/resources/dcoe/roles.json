@@ -13,6 +13,7 @@
   "permission_sets": {
     "leadership": [
       "standard_user",
+      "server_administrator",
       "alerts_read",
       "alerts_write",
       "search_across_cases",

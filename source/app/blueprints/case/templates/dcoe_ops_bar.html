@@ -1,0 +1,41 @@
+{% if dcoe_ops %}
+<div class="card mb-3 border-info" id="dcoe-ops-bar">
+  <div class="card-body py-2">
+    <div class="d-flex flex-wrap align-items-center mb-2">
+      <strong class="mr-2"><i class="fa fa-shield-alt text-info"></i> OhCR/DCOE — <span id="dcoe-ops-role-title">{{ dcoe_ops.role_title }}</span></strong>
+      {% if dcoe_ops.role_sop %}<span class="text-muted small mr-3">{{ dcoe_ops.role_sop }}</span>{% endif %}
+      <span class="badge badge-warning mr-1" title="METL tasks with no report started"><span id="dcoe-ops-progress-needed">{{ dcoe_ops.progress.needed }}</span> need report</span>
+      <span class="badge badge-light mr-1" title="Reports with content saved"><span id="dcoe-ops-progress-filled">{{ dcoe_ops.progress.filled }}</span> in progress</span>
+      <span class="badge badge-info mr-1" title="Tasks with draft reports"><span id="dcoe-ops-progress-inprogress">{{ dcoe_ops.progress.in_progress }}</span> task drafts</span>
+      <span class="badge badge-success mr-1" title="Reports attached to tasks"><span id="dcoe-ops-progress-attached">{{ dcoe_ops.progress.attached }}</span> complete</span>
+      {% if dcoe_ops.progress.network_coverage_pct is not none %}
+      <span class="badge badge-info mr-1" title="Case assets placed on network map (MOE 3.3.7)"><span id="dcoe-ops-progress-network">{{ dcoe_ops.progress.network_coverage_pct }}</span>% map coverage</span>
+      {% endif %}
+    </div>
+    <div class="d-flex flex-wrap mb-2">
+      {% for link in dcoe_ops.quick_links %}
+      <a href="{{ link.url }}" class="btn btn-sm btn-outline-info mr-1 mb-1">
+        <i class="fa-solid {{ link.icon }}"></i> {{ link.label }}
+      </a>
+      {% endfor %}
+    </div>
+    {% if dcoe_ops.workflow_tips %}
+    <div class="small text-muted mb-1"><strong>Start of shift:</strong> <span id="dcoe-ops-workflow">{{ dcoe_ops.workflow_tips|join(' → ') }}</span></div>
+    {% endif %}
+    <div class="dcoe-glossary small text-muted" style="display:none;" id="dcoe-glossary-panel">
+      {% for term, definition in dcoe_ops.glossary.items() %}
+      <span class="mr-3"><strong>{{ term }}:</strong> {{ definition }}</span>
+      {% endfor %}
+    </div>
+    <button type="button" class="btn btn-link btn-sm p-0" id="dcoe-glossary-toggle">Show team glossary</button>
+  </div>
+</div>
+<script>
+$(function () {
+  $("#dcoe-glossary-toggle").on("click", function () {
+    $("#dcoe-glossary-panel").toggle();
+    $(this).text($("#dcoe-glossary-panel").is(":visible") ? "Hide team glossary" : "Show team glossary");
+  });
+});
+</script>
+{% endif %}

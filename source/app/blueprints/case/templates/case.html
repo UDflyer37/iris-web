@@ -84,6 +84,7 @@
                 <div class="row row-card-no-pd" style="padding-top: 0px;padding-bottom: 3px;">
                     {% include 'case-nav_landing.html' %}
                 </div>
+                {% include 'dcoe_ops_bar.html' %}
                 <div id="caseReviewState" data-review-state="{{ case.review_status.status_name }}" data-reviewer-id="{{ case.reviewer_id }}" data-reviewer-name="{{ case.reviewer.name }}" style="display: none;"></div>
 
                 {% if case.reviewer_id == current_user.id and case.review_status.status_name != "Reviewed" and case.review_status.status_name != "Not reviewed" %}
@@ -197,11 +198,17 @@
                               </span>
                               Generate in Safe Mode
                           </a>
+                          <a href="#" class="btn btn-primary float-right mt-2 ml-2" onclick="return open_report_workspace();">
+                              <span class="btn-label">
+                                <i class="fa fa-file-pen"></i>
+                              </span>
+                              Preview &amp; Edit
+                            </a>
                           <a href="#" class="btn btn-light float-right mt-2 ml-2" onclick="gen_report(false);">
                               <span class="btn-label">
                                 <i class="fa fa-file-download"></i>
                               </span>
-                              Generate
+                              Download
                             </a>
                           {% endif %}
                       </div>
@@ -337,7 +344,7 @@
 <script src="/static/assets/js/plugin/select/bootstrap-multiselect.min.js"></script>
 
 <script>
-    $('#modal_select_report').selectpicker();
+    $('#select_report').selectpicker({ liveSearch: true });
     load_menu_mod_options_modal([{{case.case_id}}], 'case', $("#case_modal_quick_actions"));
 </script>
 

@@ -204,6 +204,18 @@ def case_template_populate_tasks(case: Cases, case_template: CaseTemplate):
                              caseid=case.case_id
                              )
 
+            if ctask and task_template.get('metl_attributes'):
+                from app.datamgmt.manage.manage_attribute_db import get_default_custom_attributes
+                from sqlalchemy.orm.attributes import flag_modified
+
+                attrs = ctask.custom_attributes or get_default_custom_attributes('task')
+                metl_tab = dict(attrs.get('METL Tracking', {}))
+                metl_tab.update(task_template['metl_attributes'])
+                attrs['METL Tracking'] = metl_tab
+                ctask.custom_attributes = attrs
+                flag_modified(ctask, 'custom_attributes')
+                db.session.commit()
+
             ctask = call_modules_hook('on_postload_task_create', data=ctask, caseid=case.case_id)
 
             if not ctask:

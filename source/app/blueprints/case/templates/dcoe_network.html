@@ -4,21 +4,141 @@
 {% block stylesheets %}
 <link href="/static/assets/css/vis.min.css" rel="stylesheet" type="text/css" />
 <style>
-  #dcoe-network-container { height: calc(100vh - 280px); min-height: 500px; border: 1px solid #e0e0e0; border-radius: 4px; }
-  #dcoe-asset-palette, #dcoe-network-sidebar { max-height: calc(100vh - 280px); overflow-y: auto; }
-  .dcoe-asset-chip {
-    border: 1px solid #d7d7d7;
+  .dcoe-network-layout {
+    --dcoe-palette-h: calc(100vh - 200px);
+    min-height: calc(100vh - 160px);
+  }
+  #dcoe-network-container {
+    height: var(--dcoe-palette-h);
+    min-height: 520px;
+    border: 1px solid #d8dee6;
+    border-radius: 6px;
+    background: linear-gradient(180deg, #fbfcfe 0%, #f4f6f9 100%);
+  }
+  #dcoe-palette-panel, #dcoe-network-sidebar {
+    max-height: var(--dcoe-palette-h);
+    overflow-y: auto;
+  }
+  .dcoe-stats-strip {
+    background: #fff;
+    border: 1px solid #e2e6ea;
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+  }
+  .dcoe-toolbar-bar {
+    background: #f8f9fb;
+    border: 1px solid #e2e6ea;
+    border-radius: 8px;
+    padding: 8px 12px;
+    margin-bottom: 12px;
+  }
+  .dcoe-toolbar-bar .btn { margin-right: 4px; margin-bottom: 4px; }
+  .dcoe-coverage-bar {
+    height: 8px;
     border-radius: 4px;
-    padding: 8px;
+    background: #e9ecef;
+    overflow: hidden;
+  }
+  .dcoe-coverage-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #42a5f5, #2e7d32);
+    transition: width .3s ease;
+  }
+  .dcoe-coverage-fill.warn { background: linear-gradient(90deg, #ffb74d, #ef6c00); }
+  .dcoe-coverage-fill.low { background: linear-gradient(90deg, #ef9a9a, #c62828); }
+  .dcoe-zone-legend span {
+    display: inline-block;
+    font-size: 11px;
+    margin-right: 8px;
+  }
+  .dcoe-zone-swatch {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 2px;
+    margin-right: 3px;
+    vertical-align: -1px;
+    border: 1px solid rgba(0,0,0,.12);
+  }
+  .dcoe-status-pill {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 999px;
+    font-size: 11px;
+    background: #e8f5e9;
+    color: #2e7d32;
+  }
+  .dcoe-status-pill.saving { background: #fff3e0; color: #ef6c00; }
+  .dcoe-status-pill.error { background: #ffebee; color: #c62828; }
+  .dcoe-chip {
+    border: 1px solid #d7d7d7;
+    border-radius: 6px;
+    padding: 8px 10px;
     margin-bottom: 8px;
     cursor: grab;
-    background: #fafafa;
+    background: #fff;
+    transition: box-shadow .15s ease, transform .15s ease;
+    user-select: none;
   }
-  .dcoe-asset-chip:active { cursor: grabbing; }
-  .dcoe-asset-chip small { display: block; color: #666; }
-  .dcoe-drop-active { outline: 2px dashed #4e9cff; }
+  .dcoe-chip:hover { box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+  .dcoe-chip:active { cursor: grabbing; transform: scale(.98); }
+  .dcoe-chip small { display: block; color: #666; }
+  .dcoe-chip.on-diagram { border-color: #4e9cff; background: #f3f9ff; }
+  .dcoe-drop-active { outline: 3px dashed #4e9cff; background: #eef6ff !important; }
+  .dcoe-mode-active { box-shadow: inset 0 0 0 2px #4e9cff; }
+  .dcoe-unmapped-banner {
+    background: #fff8e1;
+    border: 1px solid #ffe082;
+    border-radius: 6px;
+    padding: 8px 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+  }
+  .dcoe-unmapped-item {
+    font-size: 12px;
+    padding: 4px 0;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .dcoe-network-canvas-wrap { position: relative; }
+  .dcoe-zone-bands {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    grid-template-columns: 0.9fr 0.8fr 1.4fr 1fr 1fr 0.7fr;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.08;
+  }
+  .dcoe-zone-band { display: flex; align-items: flex-end; padding: 4px 6px; font-size: 10px; font-weight: 700; }
+  .dcoe-zone-band.perimeter { background: #ff7f7f; }
+  .dcoe-zone-band.dmz { background: #ffd700; }
+  .dcoe-zone-band.internal { background: #97C2FC; }
+  .dcoe-zone-band.server { background: #7be141; }
+  .dcoe-zone-band.endpoint { background: #cdaaff; }
+  .dcoe-zone-band.cloud { background: #87ceeb; }
+  #dcoe-network-container { position: relative; z-index: 1; }
+  .dcoe-palette-filter .btn { font-size: 11px; padding: 2px 8px; }
+  .dcoe-component-chip { display: flex; align-items: flex-start; }
+  .dcoe-component-chip .dcoe-comp-icon { width: 18px; text-align: center; margin-right: 6px; color: #5c6bc0; }
+  .dcoe-component-chip .dcoe-chip-body { flex: 1; min-width: 0; }
+  .dcoe-asset-chip .dcoe-asset-badges { margin-top: 4px; }
+  .dcoe-asset-chip .badge { font-size: 10px; margin-right: 4px; }
+  .dcoe-category-heading { font-size: 11px; font-weight: 700; color: #6c757d; text-transform: uppercase; margin: 8px 0 4px; }
+  .dcoe-node-meta { background: #f8f9fb; border-radius: 6px; padding: 8px; font-size: 12px; }
   .dcoe-service-row { display: flex; gap: 4px; margin-bottom: 4px; }
+  .dcoe-service-row .btn-remove-row { padding: 2px 6px; }
+  .dcoe-ioc-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
   .dcoe-ioc-link { display: block; font-size: 12px; }
+  #dcoe-palette-tabs .nav-link { font-size: 13px; padding: 6px 12px; }
+  .dcoe-canvas-hint {
+    font-size: 11px;
+    color: #6c757d;
+    padding: 6px 8px 0;
+  }
 </style>
 {% endblock stylesheets %}
 
@@ -31,21 +151,8 @@
       <ul class="container-fluid mt-3 mb--2">
         <ul class="navbar-nav topbar-nav ml-md-auto align-items-center page-navigation page-navigation-style-2 page-navigation-secondary">
           <li class="nav-item ml-2">
-            <span class="text-white text-sm mr-2">Network Topology — drag assets, link IOCs, export/import JSON</span>
-          </li>
-          <li class="nav-item hidden-caret">
-            <button class="btn btn-primary btn-sm" id="dcoe-network-save" type="button">Save</button>
-          </li>
-          <li class="nav-item hidden-caret ml-2">
-            <button class="btn btn-light btn-sm" id="dcoe-network-import-all" type="button">Import all assets</button>
-          </li>
-          <li class="nav-item hidden-caret ml-2">
-            <button class="btn btn-light btn-sm" id="dcoe-network-export" type="button">Export JSON</button>
-          </li>
-          <li class="nav-item hidden-caret ml-2">
-            <label class="btn btn-light btn-sm mb-0">
-              Import JSON <input type="file" id="dcoe-network-import-file" accept="application/json,.json" hidden />
-            </label>
+            <span class="text-white text-sm mr-2">Network Topology</span>
+            <span class="dcoe-status-pill" id="dcoe-save-status">Ready</span>
           </li>
         </ul>
       </ul>
@@ -53,44 +160,164 @@
 
     {% if current_user.is_authenticated %}
     {{ form.hidden_tag() }}
-    <div class="page-inner">
+    <div class="page-inner dcoe-network-layout">
+      {% include 'dcoe_ops_bar.html' %}
+
+      <div class="dcoe-stats-strip">
+        <div class="row align-items-center">
+          <div class="col-lg-4 col-md-5">
+            <div class="d-flex align-items-baseline flex-wrap">
+              <strong class="mr-2"><i class="fa fa-chart-pie text-primary"></i> Coverage</strong>
+              <span class="h5 mb-0 mr-2" id="dcoe-coverage-pct">—</span>
+              <span class="text-muted small" id="dcoe-coverage-counts"></span>
+            </div>
+            <div class="dcoe-coverage-bar mt-2"><div class="dcoe-coverage-fill" id="dcoe-coverage-fill" style="width:0%"></div></div>
+            <div class="small text-muted mt-1" id="dcoe-coverage-updated"></div>
+          </div>
+          <div class="col-lg-5 col-md-4">
+            <div class="dcoe-zone-legend mb-1" id="dcoe-zone-legend"></div>
+            <div class="small text-muted">
+              <span class="mr-2">■ red border = compromised</span>
+              <span class="mr-2">■ green = clean</span>
+              <span>■ gray = diagram-only</span>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-3 text-lg-right">
+            <button class="btn btn-primary btn-sm" id="dcoe-network-update-report" type="button"><i class="fa fa-file-alt"></i> Map report</button>
+            <button class="btn btn-outline-secondary btn-sm" id="dcoe-network-snapshot" type="button"><i class="fa fa-camera"></i> PNG</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="dcoe-toolbar-bar dcoe-toolbar">
+        <button class="btn btn-primary btn-sm" id="dcoe-network-save" type="button"><i class="fa fa-save"></i> Save</button>
+        <button class="btn btn-light btn-sm" id="dcoe-mode-connect" type="button"><i class="fa fa-link"></i> Connect</button>
+        <button class="btn btn-light btn-sm" id="dcoe-fit-view" type="button"><i class="fa fa-expand"></i> Fit</button>
+        <span class="text-muted mx-1">|</span>
+        <button class="btn btn-light btn-sm" id="dcoe-network-import-all" type="button"><i class="fa fa-download"></i> Import assets</button>
+        <button class="btn btn-success btn-sm" id="dcoe-new-asset" type="button"><i class="fa fa-plus"></i> New asset</button>
+        <a class="btn btn-outline-secondary btn-sm" id="dcoe-open-assets" href="/case/assets"><i class="fa fa-server"></i> Assets</a>
+        <span class="text-muted mx-1">|</span>
+        <button class="btn btn-light btn-sm" id="dcoe-network-export" type="button"><i class="fa fa-upload"></i> Export</button>
+        <label class="btn btn-light btn-sm mb-0">
+          <i class="fa fa-file-import"></i> Replace
+          <input type="file" id="dcoe-network-import-file" accept="application/json,.json" hidden />
+        </label>
+        <label class="btn btn-outline-secondary btn-sm mb-0">
+          <i class="fa fa-code-branch"></i> Merge
+          <input type="file" id="dcoe-network-import-merge-file" accept="application/json,.json" hidden />
+        </label>
+      </div>
+
       <div class="row">
-        <div class="col-md-2">
-          <div class="card" id="dcoe-asset-palette">
-            <div class="card-header"><h4 class="card-title mb-0">Asset palette</h4></div>
-            <div class="card-body">
-              <small class="text-muted d-block mb-2">Drag onto diagram or click +</small>
-              <div id="dcoe-asset-list"></div>
+        <div class="col-lg-3 col-md-4">
+          <div class="card" id="dcoe-palette-panel">
+            <div class="card-header py-0 px-2">
+              <ul class="nav nav-tabs card-header-tabs" id="dcoe-palette-tabs" role="tablist">
+                <li class="nav-item">
+                  <a class="nav-link active" id="dcoe-tab-components" data-toggle="tab" href="#dcoe-pane-components" role="tab">Components</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" id="dcoe-tab-assets" data-toggle="tab" href="#dcoe-pane-assets" role="tab">
+                    Assets <span class="badge badge-light" id="dcoe-asset-count">0</span>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body py-2">
+              <div class="tab-content">
+                <div class="tab-pane fade show active" id="dcoe-pane-components" role="tabpanel">
+                  <p class="small text-muted mb-2">Drag or <strong>+</strong> to place on the map.</p>
+                  <div class="dcoe-palette-filter mb-2" id="dcoe-component-filters"></div>
+                  <div id="dcoe-component-list"></div>
+                </div>
+                <div class="tab-pane fade" id="dcoe-pane-assets" role="tabpanel">
+                  <div class="dcoe-unmapped-banner" id="dcoe-unmapped-banner" style="display:none;">
+                    <strong><span id="dcoe-unmapped-count">0</span> not on map</strong>
+                    <div id="dcoe-unmapped-list" class="mt-1" style="max-height:100px;overflow-y:auto;"></div>
+                  </div>
+                  <input class="form-control form-control-sm mb-2" id="dcoe-asset-search" type="search" placeholder="Search assets…" />
+                  <div class="dcoe-palette-filter mb-2" id="dcoe-asset-filters">
+                    <button type="button" class="btn btn-xs btn-primary dcoe-asset-filter" data-filter="all">All</button>
+                    <button type="button" class="btn btn-xs btn-outline-secondary dcoe-asset-filter" data-filter="unplaced">Not placed</button>
+                    <button type="button" class="btn btn-xs btn-outline-secondary dcoe-asset-filter" data-filter="placed">On map</button>
+                    <button type="button" class="btn btn-xs btn-outline-secondary dcoe-asset-filter" data-filter="compromised">Compromised</button>
+                  </div>
+                  <div id="dcoe-asset-list"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-7">
+
+        <div class="col-lg-6 col-md-5">
           <div class="card">
-            <div class="card-body">
+            <div class="card-body p-2 dcoe-network-canvas-wrap">
+              <div class="dcoe-zone-bands" aria-hidden="true">
+                <div class="dcoe-zone-band perimeter">Perimeter</div>
+                <div class="dcoe-zone-band dmz">DMZ</div>
+                <div class="dcoe-zone-band internal">Internal</div>
+                <div class="dcoe-zone-band server">Server</div>
+                <div class="dcoe-zone-band endpoint">Endpoint</div>
+                <div class="dcoe-zone-band cloud">Cloud</div>
+              </div>
               <div id="dcoe-network-container"></div>
-              <small class="text-muted mt-2 d-block">
-                Drag nodes to reposition. Drop assets from the palette. Edge labels show protocol/port.
-              </small>
+              <div class="dcoe-canvas-hint">
+                Drag to move · Drop from palette · <em>Connect</em> + click two nodes · Double-click to inspect
+              </div>
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+
+        <div class="col-lg-3 col-md-3">
           <div class="card" id="dcoe-network-sidebar">
-            <div class="card-header"><h4 class="card-title mb-0" id="dcoe-panel-title">Inspector</h4></div>
-            <div class="card-body">
-              <p class="text-muted" id="dcoe-panel-empty">Select a node or edge.</p>
+            <div class="card-header py-2">
+              <h4 class="card-title mb-0" id="dcoe-panel-title" style="font-size:14px;">Inspector</h4>
+            </div>
+            <div class="card-body py-2">
+              <p class="text-muted small mb-2" id="dcoe-panel-empty">Select a node or connection on the map.</p>
               <div id="dcoe-panel-content" style="display:none;">
                 <div id="dcoe-node-fields">
-                  <div class="form-group">
-                    <label>Label</label>
+                  <div class="dcoe-node-meta mb-2" id="dcoe-node-meta"></div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0 small">Display label</label>
                     <input class="form-control form-control-sm" id="dcoe-node-label" type="text" />
                   </div>
-                  <div class="form-group">
-                    <label>IP address</label>
-                    <input class="form-control form-control-sm" id="dcoe-node-ip" type="text" />
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group mb-2">
+                        <label class="mb-0 small">Hostname</label>
+                        <input class="form-control form-control-sm" id="dcoe-node-hostname" type="text" />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group mb-2">
+                        <label class="mb-0 small">IP</label>
+                        <input class="form-control form-control-sm" id="dcoe-node-ip" type="text" />
+                      </div>
+                    </div>
                   </div>
-                  <div class="form-group">
-                    <label>Zone</label>
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group mb-2">
+                        <label class="mb-0 small">Role</label>
+                        <input class="form-control form-control-sm" id="dcoe-node-role" type="text" />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group mb-2">
+                        <label class="mb-0 small">Criticality</label>
+                        <select class="form-control form-control-sm" id="dcoe-node-criticality">
+                          <option value="low">Low</option>
+                          <option value="medium" selected>Medium</option>
+                          <option value="high">High</option>
+                          <option value="critical">Critical</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0 small">Zone</label>
                     <select class="form-control form-control-sm" id="dcoe-node-zone">
                       <option value="perimeter">Perimeter</option>
                       <option value="dmz">DMZ</option>
@@ -101,57 +328,136 @@
                       <option value="unknown">Unknown</option>
                     </select>
                   </div>
-                  <div class="form-group">
-                    <label>Linked asset</label>
+                  <div class="form-group mb-2">
+                    <label class="mb-0 small">Linked asset</label>
                     <select class="form-control form-control-sm" id="dcoe-node-asset">
-                      <option value="">— None —</option>
+                      <option value="">— Diagram-only —</option>
                     </select>
                   </div>
-                  <div class="form-group">
-                    <label>Open services / ports</label>
+                  <div class="form-group mb-2">
+                    <label class="mb-0 small">Notes</label>
+                    <textarea class="form-control form-control-sm" id="dcoe-node-notes" rows="2"></textarea>
+                  </div>
+                  <div class="btn-group btn-group-sm mb-2 w-100">
+                    <button class="btn btn-outline-primary" id="dcoe-promote-node" type="button">Create asset</button>
+                    <button class="btn btn-outline-secondary" id="dcoe-sync-asset" type="button">Sync</button>
+                    <button class="btn btn-outline-info" id="dcoe-focus-node" type="button">Focus</button>
+                  </div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0 small">Services</label>
+                    <div class="d-flex mb-1">
+                      <select class="form-control form-control-sm mr-1" id="dcoe-service-preset" style="flex:1;">
+                        <option value="">Add service…</option>
+                      </select>
+                      <button class="btn btn-sm btn-outline-secondary" id="dcoe-add-service" type="button">+</button>
+                    </div>
                     <div id="dcoe-services-list"></div>
-                    <button class="btn btn-sm btn-outline-secondary mt-1" id="dcoe-add-service" type="button">Add service</button>
                   </div>
-                  <div class="form-group">
-                    <label>Linked IOCs</label>
-                    <div id="dcoe-ioc-list" class="mb-2"></div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0 small">IOCs</label>
+                    <div id="dcoe-ioc-list" class="mb-1"></div>
                     <select class="form-control form-control-sm" id="dcoe-ioc-picker">
-                      <option value="">Link case IOC…</option>
+                      <option value="">Link IOC…</option>
                     </select>
-                    <a class="btn btn-sm btn-outline-primary mt-2" href="/case/ioc" id="dcoe-open-iocs" target="_blank">Open IOC tab</a>
                   </div>
                 </div>
                 <div id="dcoe-edge-fields" style="display:none;">
-                  <div class="form-group">
-                    <label>Description</label>
+                  <div class="form-group mb-2">
+                    <label class="mb-0 small">Description</label>
                     <input class="form-control form-control-sm" id="dcoe-edge-label" type="text" />
                   </div>
-                  <div class="form-group">
-                    <label>Protocol</label>
-                    <input class="form-control form-control-sm" id="dcoe-edge-protocol" type="text" placeholder="tcp" />
+                  <div class="form-group mb-2">
+                    <label class="mb-0 small">Traffic</label>
+                    <select class="form-control form-control-sm" id="dcoe-edge-traffic">
+                      <option value="allowed">Allowed</option>
+                      <option value="monitored">Monitored</option>
+                      <option value="blocked">Blocked</option>
+                      <option value="unknown">Unknown</option>
+                    </select>
                   </div>
-                  <div class="form-group">
-                    <label>Port</label>
-                    <input class="form-control form-control-sm" id="dcoe-edge-port" type="text" placeholder="443" />
+                  <div class="row">
+                    <div class="col-6">
+                      <div class="form-group mb-2">
+                        <label class="mb-0 small">Protocol</label>
+                        <input class="form-control form-control-sm" id="dcoe-edge-protocol" type="text" placeholder="tcp" />
+                      </div>
+                    </div>
+                    <div class="col-6">
+                      <div class="form-group mb-2">
+                        <label class="mb-0 small">Port</label>
+                        <input class="form-control form-control-sm" id="dcoe-edge-port" type="text" />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="form-group mb-2">
+                    <label class="mb-0 small">Bandwidth</label>
+                    <input class="form-control form-control-sm" id="dcoe-edge-bandwidth" type="text" />
                   </div>
                 </div>
-                <div class="form-group">
-                  <label>Comments</label>
+                <div class="form-group mb-2">
+                  <label class="mb-0 small">Comments</label>
                   <div id="dcoe-comments-list" class="mb-2"></div>
-                  <textarea class="form-control form-control-sm" id="dcoe-comment-input" rows="2" placeholder="Comment on this component"></textarea>
-                  <button class="btn btn-sm btn-primary mt-2" id="dcoe-add-comment" type="button">Add comment</button>
-                  <button class="btn btn-sm btn-outline-secondary mt-2" id="dcoe-push-asset-comment" type="button" style="display:none;">Post to asset too</button>
+                  <textarea class="form-control form-control-sm" id="dcoe-comment-input" rows="2"></textarea>
+                  <button class="btn btn-sm btn-primary mt-1" id="dcoe-add-comment" type="button">Add</button>
+                  <button class="btn btn-sm btn-outline-secondary mt-1" id="dcoe-push-asset-comment" type="button" style="display:none;">To asset</button>
                 </div>
-                <button class="btn btn-sm btn-danger" id="dcoe-delete-selection" type="button">Delete selected</button>
+                <button class="btn btn-sm btn-danger btn-block" id="dcoe-delete-selection" type="button">Delete</button>
               </div>
-              <hr />
+              <hr class="my-2" />
               <div class="form-group mb-0">
-                <label>Connect nodes</label>
-                <select class="form-control form-control-sm mb-2" id="dcoe-edge-from"></select>
-                <select class="form-control form-control-sm mb-2" id="dcoe-edge-to"></select>
-                <button class="btn btn-sm btn-secondary" id="dcoe-connect-edge" type="button">Add connection</button>
+                <label class="mb-1 small">Quick connect</label>
+                <select class="form-control form-control-sm mb-1" id="dcoe-edge-from"></select>
+                <select class="form-control form-control-sm mb-1" id="dcoe-edge-to"></select>
+                <button class="btn btn-sm btn-secondary btn-block" id="dcoe-connect-edge" type="button">Add connection</button>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="dcoe-modal-new-asset" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Create asset on map</h5>
+            <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="dcoe-new-asset-node-id" />
+            <input type="hidden" id="dcoe-new-asset-x" />
+            <input type="hidden" id="dcoe-new-asset-y" />
+            <div class="form-group">
+              <label>Name *</label>
+              <input class="form-control" id="dcoe-new-asset-name" type="text" />
+            </div>
+            <div class="form-group">
+              <label>Type *</label>
+              <select class="form-control" id="dcoe-new-asset-type"></select>
+            </div>
+            <div class="form-group">
+              <label>IP</label>
+              <input class="form-control" id="dcoe-new-asset-ip" type="text" />
+            </div>
+            <div class="form-group">
+              <label>Zone</label>
+              <select class="form-control" id="dcoe-new-asset-zone">
+                <option value="perimeter">Perimeter</option>
+                <option value="dmz">DMZ</option>
+                <option value="internal" selected>Internal</option>
+                <option value="server">Server</option>
+                <option value="endpoint">Endpoint</option>
+                <option value="cloud">Cloud</option>
+              </select>
+            </div>
+            <div class="form-group mb-0">
+              <label>Description</label>
+              <textarea class="form-control" id="dcoe-new-asset-description" rows="2"></textarea>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button class="btn btn-secondary" data-dismiss="modal" type="button">Cancel</button>
+            <button class="btn btn-primary" id="dcoe-submit-new-asset" type="button">Create</button>
           </div>
         </div>
       </div>
@@ -166,5 +472,6 @@
 <script src="/static/assets/js/plugin/vis/vis.min.js"></script>
 <script src="/static/assets/js/plugin/vis/vis-network.min.js"></script>
 <script src="/static/assets/js/iris/case.common.js"></script>
+<script src="/static/assets/js/iris/dcoe.ops.js"></script>
 <script src="/static/assets/js/iris/dcoe.network.js"></script>
 {% endblock javascripts %}

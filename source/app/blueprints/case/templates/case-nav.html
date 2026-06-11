@@ -1,7 +1,7 @@
     <nav class="nav-bottom rounded" id="h_nav_tab">
           <div class="container-fluid" >
               <ul class="navbar-nav rounded" style="background-color:#4c72a130;">
-            <li class="nav-item {{ active if page == 'case' }}">
+            <li class="nav-item{% if page == 'case' %} active{% endif %}">
                 <a class="nav-link" href="/case?cid={{session['current_case'].case_id}}">
                     <span class="menu-title">Summary</span>
                 </a>
@@ -31,9 +31,19 @@
                     <span class="menu-title">Graph</span>
                 </a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item{% if page == 'tasks' %} active{% endif %}">
                 <a class="nav-link" href="/case/tasks?cid={{session['current_case'].case_id}}">
                     <span class="menu-title">Tasks</span>
+                </a>
+            </li>
+            <li class="nav-item{% if page == 'dcoe_reports' %} active{% endif %}">
+                <a class="nav-link" href="/case/dcoe/reports?cid={{session['current_case'].case_id}}">
+                    <span class="menu-title">Reports</span>
+                </a>
+            </li>
+            <li class="nav-item{% if page == 'dcoe_network' %} active{% endif %}">
+                <a class="nav-link" href="/case/dcoe/network?cid={{session['current_case'].case_id}}">
+                    <span class="menu-title">Network</span>
                 </a>
             </li>
             <li class="nav-item">

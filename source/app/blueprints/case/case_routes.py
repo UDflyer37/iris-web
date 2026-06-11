@@ -38,6 +38,7 @@ from app import socket_io
 from app.blueprints.case.case_assets_routes import case_assets_blueprint
 from app.blueprints.case.case_graphs_routes import case_graph_blueprint
 from app.blueprints.case.dcoe_network_routes import dcoe_network_blueprint
+from app.blueprints.case.dcoe_report_routes import dcoe_report_blueprint
 from app.blueprints.case.case_ioc_routes import case_ioc_blueprint
 from app.blueprints.case.case_notes_routes import case_notes_blueprint
 from app.blueprints.case.case_rfiles_routes import case_rfiles_blueprint
@@ -80,6 +81,7 @@ app.register_blueprint(case_ioc_blueprint)
 app.register_blueprint(case_rfiles_blueprint)
 app.register_blueprint(case_graph_blueprint)
 app.register_blueprint(dcoe_network_blueprint)
+app.register_blueprint(dcoe_report_blueprint)
 app.register_blueprint(case_tasks_blueprint)
 
 case_blueprint = Blueprint('case',
@@ -116,8 +118,12 @@ def case_r(caseid, url_redir):
     desc_crc32, description = case_get_desc_crc(caseid)
     setattr(case, 'status_name', CaseStatus(case.status_id).name.replace('_', ' ').title())
 
+    from app.datamgmt.dcoe.dcoe_ops_db import get_dcoe_ops_context
+
+    dcoe_ops = get_dcoe_ops_context(case, current_user)
     return render_template('case.html', case=case, desc=description, crc=desc_crc32,
-                           reports=reports, reports_act=reports_act, form=form)
+                           reports=reports, reports_act=reports_act, form=form,
+                           dcoe_ops=dcoe_ops, page="case")
 
 
 @case_blueprint.route('/case/exists', methods=['GET'])

@@ -1,0 +1,338 @@
+{
+  "version": "1.0",
+  "default_tlp": "AMBER+STRICT",
+  "forms": {
+    "sitrep_ohcr_template": {
+      "title": "SitRep — OhCR Internal",
+      "tlp": "AMBER+STRICT",
+      "warning": "DO NOT provide this version to the customer/NETO.",
+      "sections": [
+        {
+          "id": "priorities",
+          "label": "1. Mission Priorities",
+          "fields": [
+            {"id": "priority_1", "label": "Priority 1", "type": "text", "placeholder": "Top mission priority"},
+            {"id": "priority_2", "label": "Priority 2", "type": "text"},
+            {"id": "priority_3", "label": "Priority 3", "type": "text"}
+          ]
+        },
+        {
+          "id": "troop_to_task",
+          "label": "2. Troop to Task",
+          "fields": [
+            {"id": "troop_summary", "label": "Role assignments and status", "type": "textarea", "rows": 4, "placeholder": "TM, DTM, KM — assignment and status"}
+          ]
+        },
+        {
+          "id": "activities",
+          "label": "3. Significant Activities (24h)",
+          "fields": [
+            {"id": "activities", "label": "Activities", "type": "textarea", "rows": 5}
+          ]
+        },
+        {
+          "id": "terrain",
+          "label": "4. Key Terrain / Risk Updates",
+          "fields": [
+            {"id": "terrain", "label": "Updates", "type": "textarea", "rows": 3}
+          ]
+        },
+        {
+          "id": "findings",
+          "label": "5. Vulnerability and Mitigation Findings",
+          "fields": [
+            {"id": "findings", "label": "Findings", "type": "textarea", "rows": 3}
+          ]
+        },
+        {
+          "id": "neto",
+          "label": "6. NETO Coordination",
+          "fields": [
+            {"id": "neto_coord", "label": "Coordination notes", "type": "textarea", "rows": 3}
+          ]
+        },
+        {
+          "id": "issues",
+          "label": "7. Open Issues / CCIRs",
+          "fields": [
+            {"id": "issues", "label": "Issues", "type": "textarea", "rows": 3}
+          ]
+        },
+        {
+          "id": "next24",
+          "label": "8. Next 24h Priorities",
+          "fields": [
+            {"id": "next_24h", "label": "Priorities", "type": "textarea", "rows": 3}
+          ]
+        },
+        {
+          "id": "routing",
+          "label": "9. OhCR Leadership Routing",
+          "fields": [
+            {"id": "ops_lead", "label": "Ops Lead", "type": "text"},
+            {"id": "reservists", "label": "Reservists on orders", "type": "text"}
+          ]
+        }
+      ]
+    },
+    "sitrep_customer_template": {
+      "title": "SitRep — Customer NETO",
+      "tlp": "AMBER",
+      "sections": [
+        {"id": "priorities", "label": "1. Mission Priorities", "fields": [
+          {"id": "priority_1", "label": "Priority 1", "type": "text"},
+          {"id": "priority_2", "label": "Priority 2", "type": "text"},
+          {"id": "priority_3", "label": "Priority 3", "type": "text"}
+        ]},
+        {"id": "summary", "label": "2. Team Activities Summary", "fields": [
+          {"id": "team_summary", "label": "Summary", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "findings", "label": "3. Findings", "fields": [
+          {"id": "findings", "label": "Findings (sanitized)", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "recommendations", "label": "4. Recommendations / Mitigations", "fields": [
+          {"id": "recommendations", "label": "Recommendations", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "pending", "label": "5. Pending NETO Actions", "fields": [
+          {"id": "pending_actions", "label": "Pending approvals/actions", "type": "textarea", "rows": 3}
+        ]},
+        {"id": "plan", "label": "6. Next 24h Plan", "fields": [
+          {"id": "next_plan", "label": "Plan", "type": "textarea", "rows": 3}
+        ]}
+      ]
+    },
+    "intsum_template": {
+      "title": "INTSUM — Daily Intelligence Summary",
+      "tlp": "AMBER+STRICT",
+      "sections": [
+        {"id": "summary", "label": "1. Intelligence Summary (24h)", "fields": [
+          {"id": "intel_summary", "label": "Summary", "type": "textarea", "rows": 5}
+        ]},
+        {"id": "threat", "label": "2. Threat / Adversary Updates", "fields": [
+          {"id": "threat_updates", "label": "Updates", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "pir", "label": "3. Changes to Prioritized Intel Requirements", "fields": [
+          {"id": "pir_changes", "label": "PIR changes and operational impact", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "ccir", "label": "4. Recommended CCIRs for TM", "fields": [
+          {"id": "ccirs", "label": "CCIRs", "type": "textarea", "rows": 3}
+        ]},
+        {"id": "sources", "label": "5. Customer / Fusion Source Notes", "fields": [
+          {"id": "source_notes", "label": "Notes", "type": "textarea", "rows": 3}
+        ]}
+      ]
+    },
+    "hunt_status_report": {
+      "title": "Hunt Status Report",
+      "tlp": "AMBER+STRICT",
+      "sections": [
+        {"id": "hunt", "label": "Hunt / Incident", "repeatable": true, "min_instances": 1, "fields": [
+          {"id": "case_id", "label": "Case ID", "type": "text"},
+          {"id": "title", "label": "Title", "type": "text"},
+          {"id": "lead", "label": "Lead", "type": "text"},
+          {"id": "status", "label": "Status", "type": "select", "options": ["Open", "In progress", "Monitoring", "Closed"]},
+          {"id": "key_finding", "label": "Key finding", "type": "textarea", "rows": 2},
+          {"id": "next_step", "label": "Next step", "type": "textarea", "rows": 2}
+        ]}
+      ]
+    },
+    "network_map_status": {
+      "title": "Network Map Status",
+      "tlp": "AMBER",
+      "sections": [
+        {"id": "topology", "label": "Interactive Topology", "fields": [
+          {"id": "assets_mapped", "label": "Assets mapped", "type": "text", "placeholder": "e.g. 12 / 15"},
+          {"id": "last_updated_by", "label": "Last updated by", "type": "text"}
+        ]},
+        {"id": "physical", "label": "Physical Map (MOP 2.6.1)", "fields": [
+          {"id": "physical_status", "label": "Status", "type": "select", "options": ["Not started", "In progress", "Complete"]},
+          {"id": "physical_evidence", "label": "Evidence link", "type": "text"}
+        ]},
+        {"id": "logical", "label": "Logical Map (MOP 2.6.2)", "fields": [
+          {"id": "logical_status", "label": "Status", "type": "select", "options": ["Not started", "In progress", "Complete"]},
+          {"id": "logical_evidence", "label": "Evidence link", "type": "text"}
+        ]},
+        {"id": "overlay", "label": "Traffic Flow Overlay (MOP 3.3.5)", "fields": [
+          {"id": "overlay_status", "label": "Status", "type": "select", "options": ["Not started", "In progress", "Complete"]},
+          {"id": "netad_verified", "label": "NETAD verified", "type": "select", "options": ["Yes", "No", "Partial"]}
+        ]},
+        {"id": "coverage", "label": "MOE 3.3.7 — Network Coverage", "fields": [
+          {"id": "coverage_pct", "label": "Estimated coverage %", "type": "text"},
+          {"id": "gaps", "label": "Gaps", "type": "textarea", "rows": 3}
+        ]}
+      ]
+    },
+    "incident_closure_report": {
+      "title": "Incident Closure Report",
+      "tlp": "AMBER+STRICT",
+      "sections": [
+        {"id": "incident", "label": "Incident", "fields": [
+          {"id": "incident_title", "label": "Case / title", "type": "text"},
+          {"id": "summary", "label": "Summary", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "root_cause", "label": "Root Cause / Adversary Actions", "fields": [
+          {"id": "root_cause", "label": "Root cause", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "actions", "label": "Actions Taken", "fields": [
+          {"id": "actions", "label": "Actions", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "evidence", "label": "Evidence Links", "fields": [
+          {"id": "evidence_links", "label": "IRIS evidence links", "type": "textarea", "rows": 3}
+        ]},
+        {"id": "residual", "label": "Residual Risk & NETO Notification", "fields": [
+          {"id": "residual_risk", "label": "Residual risk", "type": "textarea", "rows": 2},
+          {"id": "neto_notified", "label": "NETO notified", "type": "select", "options": ["Yes", "No"]}
+        ]}
+      ]
+    },
+    "vulnerability_finding_report": {
+      "title": "Vulnerability Finding Report",
+      "tlp": "AMBER",
+      "sections": [
+        {"id": "finding", "label": "Finding", "repeatable": true, "min_instances": 1, "fields": [
+          {"id": "finding_id", "label": "Finding ID", "type": "text"},
+          {"id": "host", "label": "Host / Network", "type": "text"},
+          {"id": "severity", "label": "Severity", "type": "select", "options": ["Low", "Medium", "High", "Critical"]},
+          {"id": "description", "label": "Description", "type": "textarea", "rows": 4},
+          {"id": "neto_ticket", "label": "NETO ticket #", "type": "text"},
+          {"id": "route_sitrep", "label": "Route to SitRep", "type": "checkbox"},
+          {"id": "route_gold", "label": "Route to Gold Report", "type": "checkbox"}
+        ]}
+      ]
+    },
+    "hardening_recommendation_report": {
+      "title": "Hardening Recommendation to NETO",
+      "tlp": "AMBER",
+      "sections": [
+        {"id": "rec", "label": "Recommendation", "fields": [
+          {"id": "urgency", "label": "Urgency", "type": "select", "options": ["Low", "Medium", "High"]},
+          {"id": "recommendation", "label": "Recommendation", "type": "textarea", "rows": 4},
+          {"id": "affected_systems", "label": "Affected systems", "type": "textarea", "rows": 3},
+          {"id": "implementation", "label": "Implementation steps", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "neto", "label": "NETO Discussion", "fields": [
+          {"id": "neto_discussion", "label": "Date / POC / outcome", "type": "textarea", "rows": 2},
+          {"id": "status", "label": "Status", "type": "select", "options": ["Draft", "In SitRep", "NETO approved", "Implemented"]}
+        ]}
+      ]
+    },
+    "neto_network_action_request": {
+      "title": "NETO Network Action Request",
+      "tlp": "AMBER+STRICT",
+      "sections": [
+        {"id": "request", "label": "Request", "fields": [
+          {"id": "ticket_number", "label": "Ticket # (≥1001)", "type": "text"},
+          {"id": "requested_by", "label": "Requested by (SME)", "type": "text"},
+          {"id": "approver", "label": "TM/DTM approver", "type": "text"},
+          {"id": "action_requested", "label": "Action requested", "type": "textarea", "rows": 4},
+          {"id": "systems_affected", "label": "Systems affected", "type": "textarea", "rows": 3},
+          {"id": "risk", "label": "Risk", "type": "select", "options": ["Low", "Medium", "High"]}
+        ]},
+        {"id": "approval", "label": "NETO Approval", "fields": [
+          {"id": "neto_approver", "label": "NETO approver", "type": "text"},
+          {"id": "approval_datetime", "label": "Approval date/time", "type": "text"},
+          {"id": "execution_notes", "label": "Execution notes", "type": "textarea", "rows": 3}
+        ]}
+      ]
+    },
+    "informal_neto_update": {
+      "title": "Informal NETO Update",
+      "tlp": "AMBER",
+      "sections": [
+        {"id": "entry", "label": "Update Entry", "repeatable": true, "min_instances": 1, "fields": [
+          {"id": "neto_poc", "label": "NETO POC", "type": "text"},
+          {"id": "topic", "label": "Topic", "type": "text"},
+          {"id": "ohcr_lead", "label": "OhCR lead", "type": "text"},
+          {"id": "followup_ticket", "label": "Follow-up ticket #", "type": "text"},
+          {"id": "in_sitrep", "label": "Included in SitRep", "type": "select", "options": ["Yes", "No"]},
+          {"id": "notes", "label": "Notes", "type": "textarea", "rows": 4}
+        ]}
+      ]
+    },
+    "gold_report_outline": {
+      "title": "Gold Report Outline",
+      "tlp": "AMBER",
+      "sections": [
+        {"id": "exec", "label": "Executive Summary", "fields": [
+          {"id": "executive_summary", "label": "Summary", "type": "textarea", "rows": 5}
+        ]},
+        {"id": "mitigations", "label": "Risk Mitigation Plan", "fields": [
+          {"id": "high_level", "label": "High-level mitigations", "type": "textarea", "rows": 4},
+          {"id": "network_mitigations", "label": "Network details", "type": "textarea", "rows": 3},
+          {"id": "host_mitigations", "label": "Host details", "type": "textarea", "rows": 3},
+          {"id": "intel_mitigations", "label": "Threat/Intel details", "type": "textarea", "rows": 3}
+        ]},
+        {"id": "opsec", "label": "OPSEC Decisions", "fields": [
+          {"id": "opsec", "label": "OPSEC decisions (if any)", "type": "textarea", "rows": 3}
+        ]}
+      ]
+    },
+    "aar_template": {
+      "title": "After Action Review",
+      "tlp": "AMBER+STRICT",
+      "sections": [
+        {"id": "comment", "label": "AAR Comment", "repeatable": true, "min_instances": 1, "fields": [
+          {"id": "expected", "label": "What was supposed to happen", "type": "textarea", "rows": 2},
+          {"id": "actual", "label": "What actually happened", "type": "textarea", "rows": 2},
+          {"id": "why", "label": "Why", "type": "textarea", "rows": 2},
+          {"id": "recommendation", "label": "Recommendation", "type": "textarea", "rows": 2}
+        ]}
+      ]
+    },
+    "nda_moa_log": {
+      "title": "NDA / MOA and Authority Log",
+      "tlp": "AMBER+STRICT",
+      "sections": [
+        {"id": "nda", "label": "NDA / AUP", "fields": [
+          {"id": "nda_reviewed", "label": "NDA reviewed with team", "type": "select", "options": ["Yes", "No"]},
+          {"id": "signatures", "label": "Signatures collected", "type": "select", "options": ["Yes", "No", "Partial"]}
+        ]},
+        {"id": "moa", "label": "MOA with NETO", "fields": [
+          {"id": "moa_reviewed", "label": "MOA reviewed", "type": "select", "options": ["Yes", "No"]},
+          {"id": "moa_returned", "label": "MOA returned to leadership", "type": "select", "options": ["Yes", "No"]}
+        ]},
+        {"id": "access", "label": "Network Access (MOP 2.3.4)", "fields": [
+          {"id": "access_level", "label": "Access level granted", "type": "text"},
+          {"id": "access_effective", "label": "Date access effective", "type": "text"}
+        ]}
+      ]
+    },
+    "intel_requirements": {
+      "title": "Intelligence Requirements",
+      "tlp": "AMBER+STRICT",
+      "sections": [
+        {"id": "pirs", "label": "Prioritized Intelligence Requirements", "fields": [
+          {"id": "pir_list", "label": "PIRs (priority order)", "type": "textarea", "rows": 8}
+        ]}
+      ]
+    },
+    "mission_planning_whiteboard": {
+      "title": "Mission Planning Whiteboard",
+      "tlp": "AMBER+STRICT",
+      "sections": [
+        {"id": "analysis", "label": "Mission Analysis", "fields": [
+          {"id": "mission_analysis", "label": "Analysis notes", "type": "textarea", "rows": 5}
+        ]},
+        {"id": "limitations", "label": "Mission Limitations", "fields": [
+          {"id": "limitations", "label": "Limitations", "type": "textarea", "rows": 4}
+        ]},
+        {"id": "coa", "label": "COA Development", "fields": [
+          {"id": "coa_notes", "label": "COAs and direction", "type": "textarea", "rows": 5}
+        ]}
+      ]
+    },
+    "detailed_recommendations": {
+      "title": "Detailed Recommendations",
+      "tlp": "AMBER",
+      "sections": [
+        {"id": "rec", "label": "Recommendation", "repeatable": true, "min_instances": 1, "fields": [
+          {"id": "recommendation", "label": "Recommendation", "type": "textarea", "rows": 2},
+          {"id": "rec_type", "label": "Type", "type": "text"},
+          {"id": "priority", "label": "Priority", "type": "select", "options": ["Low", "Medium", "High", "Critical"]},
+          {"id": "neto_approval", "label": "NETO Approval", "type": "select", "options": ["Pending", "Approved", "Denied", "N/A"]},
+          {"id": "implemented", "label": "Implemented", "type": "select", "options": ["Yes", "No", "Partial"]}
+        ]}
+      ]
+    }
+  }
+}

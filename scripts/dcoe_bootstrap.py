@@ -147,8 +147,9 @@ def metl_task_to_template_task(entry: dict, mop_report_map: dict | None = None) 
     if report_template:
         note_ref = report_template.get("note_ref") or "11 - Reporting Template Library"
         description += (
-            f"\n\n**Report deliverable:** Copy `{report_template['title']}` "
-            f"from `{note_ref}` and save your completed version with date/MOP in the title."
+            f"\n\n**Report deliverable:** Generate `{report_template['title']}` via "
+            f"**Case → Generate report** or **Manage → Advanced → Report Templates**, "
+            f"or copy the note template from `{note_ref}`."
         )
 
     tags = [
@@ -172,12 +173,24 @@ def metl_task_to_template_task(entry: dict, mop_report_map: dict | None = None) 
     if report_template:
         tags.append(f"report-template-{report_template['key']}")
 
+    metl_attributes = {
+        "MOP ID": entry["mop_id"],
+        "Evidence type": entry.get("evidence_type", ""),
+        "Leader role": leader_code,
+        "Analyst role": analyst_code,
+        "Evidence link": "",
+        "Report template": report_template["title"] if report_template else "",
+        "NETO ticket number": "",
+        "TM validated": False,
+    }
+
     return {
         "title": f"[{entry['mop_id']}] {entry['description'][:120]}",
         "description": description,
         "tags": tags,
         "assignee_logins": resolve_task_assignees(leader_code, analyst_code),
         "report_template_key": report_template["key"] if report_template else None,
+        "metl_attributes": metl_attributes,
     }
 
 
@@ -804,6 +817,16 @@ def bootstrap(dry_run: bool = False) -> int:
             f"{role_filters_existing} already present"
         )
 
+        from app.datamgmt.dcoe.dcoe_report_templates_db import bootstrap_dcoe_report_templates
+
+        reports_created, reports_updated, reports_unchanged, _report_ids = bootstrap_dcoe_report_templates(
+            reporting_data, note_data, admin.id
+        )
+        print(
+            f"  IRIS report templates: {reports_created} created, "
+            f"{reports_updated} updated, {reports_unchanged} unchanged"
+        )
+
         siem_user = User.query.filter(User.user == "dcoe-siem-api").first()
         if siem_user and siem_user.api_key:
             print(f"  SIEM API key (dcoe-siem-api): {siem_user.api_key}")
@@ -819,7 +842,8 @@ def bootstrap(dry_run: bool = False) -> int:
         print("  5. Use Alerts saved filters + private 'OhCR-DCOE: My Assigned Alerts'")
         print("  6. Mission case Tasks — filter Tags per your role guide")
         print("  7. Reference: source/app/resources/dcoe/role_operator_guides.md")
-        print("  8. SIEM feeder: copy dcoe_siem_feeder.example.json → dcoe_siem_feeder.json")
+        print("  8. Reports: Manage → Advanced → Report Templates (or Case → Generate report)")
+        print("  9. SIEM feeder: copy dcoe_siem_feeder.example.json → dcoe_siem_feeder.json")
 
         if generated_password:
             print("\nLocal account password (all non-service users):")

@@ -5,6 +5,38 @@
 {% block stylesheets %}
 {% include 'includes/header_case.html' %}
 <link rel="stylesheet" href="/static/assets/css/bootstrap-multiselect.min.css">
+<style>
+  .dcoe-task-report-form, .dcoe-task-report-preview {
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid #e2e6ea;
+    border-radius: 6px;
+    padding: 12px;
+    background: #fafbfc;
+  }
+  .dcoe-task-report-preview { background: #fff; }
+  .dcoe-task-report-form .dcoe-form-section {
+    background: #fff;
+    border: 1px solid #e6eaef;
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+  }
+  .dcoe-task-report-form .dcoe-form-section h5 {
+    font-size: 14px;
+    margin-bottom: 8px;
+    color: #2c3e50;
+  }
+  .dcoe-task-report-form .dcoe-form-field { margin-bottom: 8px; }
+  .dcoe-task-report-form .dcoe-form-field label {
+    font-size: 12px;
+    font-weight: 600;
+    margin-bottom: 3px;
+    color: #495057;
+  }
+  .dcoe-repeatable-instance { background: #fff; }
+  #dcoe-task-report-tabs .btn { font-size: 12px; }
+</style>
 {% endblock stylesheets %}
 
 {% block content %}
@@ -43,6 +75,24 @@
                 </div>
 			</nav>
         <div class="page-inner ">
+            {% include 'dcoe_ops_bar.html' %}
+            {% if dcoe_ops %}
+            <div class="mb-2" id="dcoe-task-filters">
+              <span class="text-muted small mr-2">Quick filters:</span>
+              {% for chip in dcoe_ops.filter_chips %}
+              <button type="button"
+                class="btn btn-xs btn-outline-secondary mr-1 mb-1 dcoe-task-filter-chip"
+                data-chip-id="{{ chip.id }}"
+                data-filter="{{ chip.filter | default('tag') }}"
+                data-tag="{{ chip.tag | default('') }}"
+                data-status="{{ chip.status | default('') }}"
+                data-regex="{{ 'true' if chip.get('regex') else 'false' }}"
+                {% if chip.get('disabled') %}disabled title="Sign in with your DCOE role account to use this filter"{% endif %}
+              >{{ chip.label }}</button>
+              {% endfor %}
+              <button type="button" class="btn btn-xs btn-link mb-1" id="dcoe-task-filter-clear">Clear</button>
+            </div>
+            {% endif %}
             <div class="row ">
                  <div class="col-md-12">
                         <div class="loader1 text-center ml-mr-auto" id="loading_msg">Loading...</div>
@@ -59,6 +109,7 @@
                                                 <th>Status</th>
                                                 <th>Assigned to</th>
                                                 <th>Open date</th>
+                                                <th>Report</th>
                                                 <th>Tags</th>
                                             </tr>
                                         </thead>
@@ -69,6 +120,7 @@
                                                 <th>Status</th>
                                                 <th>Assigned to</th>
                                                 <th>Open date</th>
+                                                <th>Report</th>
                                                 <th>Tags</th>
                                             </tr>
                                         </tfoot>
@@ -103,6 +155,9 @@
 
 <script src="/static/assets/js/plugin/datatables/dataTables.cellEdit.js"></script>
 <script src="/static/assets/js/plugin/select/bootstrap-multiselect.min.js"></script>
+<script src="/static/assets/js/iris/dcoe.report.form.js"></script>
+<script src="/static/assets/js/iris/dcoe.task.report.js"></script>
+<script src="/static/assets/js/iris/dcoe.ops.js"></script>
 <script src="/static/assets/js/iris/case.tasks.js"></script>
 
 
