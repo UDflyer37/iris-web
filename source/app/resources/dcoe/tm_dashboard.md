@@ -4,6 +4,8 @@ TLP:AMBER+STRICT (internal)
 
 This guide covers the **Team Manager (TM)** daily workflow in DFIR-IRIS after running `dcoe_bootstrap.py`.
 
+**Team-wide role guides:** Each of the 11 operators has a pre-configured guide inside the mission case (`10 - Operator Guides`) plus a private **My Assigned Alerts** filter. Full reference: `role_operator_guides.md`.
+
 ---
 
 ## 1. Login and mission setup
@@ -14,7 +16,8 @@ This guide covers the **Team Manager (TM)** daily workflow in DFIR-IRIS after ru
 | 2 | **Manage → Customers** — create the NETO/customer for this mission |
 | 3 | **Manage → Cases → New** — template **`OhCR-DCOE-MISSION-MASTER`** |
 | 4 | Set case custom attributes (**OhCR/DCOE Mission** tab): OPORD, NETO org, ticket counter `1001` |
-| 5 | Brief team: all evidence goes in IRIS; KM owns SitRep notes in `07 - Daily SitRep` |
+| 5 | Brief team: open **`10 - Operator Guides (Read First)`** — each member reads their role guide |
+| 6 | Confirm each SME can see **OhCR-DCOE: My Assigned Alerts** under Alerts → Saved filters |
 
 ---
 
@@ -168,13 +171,23 @@ Run on a 5-minute cron from the IRIS server or a trusted analyst jump box on the
 
 ## 7. Role quick reference
 
-| Login | Primary IRIS focus |
-|-------|-------------------|
-| `dcoe-tm` | Filters, METL reports, MOE gates, NETO tracker |
-| `dcoe-km` | Notes `07`/`08`, artifact logs, `analyst-km` tasks |
-| `dcoe-dtm` | Planning notes `02`, intel tasks, Gold Report compile |
-| `dcoe-siem` | Alert queue, SIEM-tagged detections |
-| SME logins | Child incident cases, assigned METL tasks by tag |
+Each role has an **in-app operator guide** (mission case notes) and **private alert filter**.
+
+| Login | Role | METL tag filter | Primary workspace |
+|-------|------|-----------------|-------------------|
+| `dcoe-tm` | Team Manager | `leader-tm`, `tm-checklist-report` | Alerts, NETO tracker, METL index |
+| `dcoe-dtm` | Deputy TM | `leader-dtm` | `02 - Mission Planning`, Gold Report |
+| `dcoe-km` | Knowledge Manager | `analyst-km` | `07`/`08` SitRep and Gold Report |
+| `dcoe-rma` | Risk Auditor | `analyst-rma` | `04 - Key Terrain and Risk` |
+| `dcoe-netad` | Network SME | `analyst-netad` | `03 - Battlespace Enumeration` |
+| `dcoe-df` | Digital Forensics | `analyst-df` | Child incident cases, artifact log |
+| `dcoe-int` | Intrusion / Hunt | `analyst-int` | SIEM detections, hunt cases |
+| `dcoe-end` | Endpoint Analyst | `analyst-end` | Endpoint alerts, host mitigations |
+| `dcoe-asa` | All Source Analyst | `analyst-asa` | INTSUM, intel requirements |
+| `dcoe-siem` | SIEM Analyst | `analyst-siem` | SIEM detection queue |
+| `dcoe-sysad` | System Admin | `analyst-sysad` | Platform and logging support |
+
+See `role_operator_guides.md` for full responsibilities, daily workflows, and IRIS tool usage per role.
 
 ---
 
@@ -195,4 +208,6 @@ DCOE_BOOTSTRAP_PASSWORD='YourTeamPassword' \
   python3 /iriswebapp/scripts/dcoe_bootstrap.py
 ```
 
-Templates are not duplicated if they already exist. Delete old case templates in **Manage → Case Templates** before re-bootstrap if you need a fresh METL task set.
+Templates are not duplicated if they already exist. Delete old case templates in **Manage → Case Templates** before re-bootstrap if you need a fresh METL task set **with operator guides**.
+
+Re-bootstrap also creates per-user **OhCR-DCOE: My Assigned Alerts** private filters for all 11 roles.

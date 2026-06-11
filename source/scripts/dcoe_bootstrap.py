@@ -106,30 +106,178 @@ def build_note_directories(note_data: dict) -> list[dict]:
     return directories
 
 
-def build_mission_case_template(metl_data: dict, note_data: dict) -> dict:
+def render_role_operator_note(role_code: str, role: dict) -> str:
+    lines = [
+        f"TLP:AMBER+STRICT",
+        "",
+        f"# {role['title']} ({role_code}) — IRIS Operator Guide",
+        "",
+        f"**Login:** `{role['user_login']}`  |  **Group:** `{role['group']}`",
+        f"**SOP role:** {role['sop_role']}",
+        "",
+        "## Your responsibilities",
+    ]
+    for item in role["responsibilities"]:
+        lines.append(f"- {item}")
+
+    metl = role["metl_tags"]
+    lines.extend([
+        "",
+        "## METL task filters (Mission case → Tasks → Tags column)",
+        f"- Primary: `{', '.join(metl['primary'])}`",
+    ])
+    if metl.get("reporting"):
+        lines.append(f"- Reporting: `{', '.join(metl['reporting'])}`")
+    if metl.get("also_assigned"):
+        lines.append(f"- Also assigned: `{', '.join(metl['also_assigned'])}`")
+
+    lines.extend(["", "## Your note workspaces"])
+    for entry in role["note_directories"]:
+        lines.append(f"- **{entry['path']}** — {entry['use']}")
+
+    lines.extend(["", "## Alert saved filters (Alerts → Filters → Saved filters)"])
+    for entry in role.get("alert_filters", []):
+        lines.append(f"- **{entry['name']}** — {entry['when']}")
+    for entry in role.get("private_alert_filters", []):
+        lines.append(f"- **{entry['name']}** (your private filter) — {entry['description']}")
+
+    lines.extend(["", "## IRIS tools for this role"])
+    for entry in role["iris_tools"]:
+        lines.append(f"- **{entry['tool']}** — {entry['use']}")
+
+    workflow = role["daily_workflow"]
+    for phase, label in [
+        ("start_of_shift", "Start of shift"),
+        ("during_ops", "During operations"),
+        ("end_of_shift", "End of shift"),
+    ]:
+        lines.extend(["", f"## {label}"])
+        for step in workflow[phase]:
+            lines.append(f"- {step}")
+
+    lines.extend([
+        "",
+        "## Reporting deliverables",
+    ])
+    for item in role["reporting_deliverables"]:
+        lines.append(f"- {item}")
+
+    lines.extend([
+        "",
+        "## Coordinate with",
+        ", ".join(role["coordinates_with"]),
+        "",
+        "---",
+        "Bookmark this note. Full reference: `source/app/resources/dcoe/role_operator_guides.md`",
+    ])
+    return "\n".join(lines)
+
+
+def build_responsibility_matrix_note(dashboards: dict) -> dict:
+    lines = [
+        "TLP:AMBER+STRICT",
+        "",
+        "# OhCR/DCOE Team Responsibility Matrix",
+        "",
+        "Each team member: log in with your account → open this directory → read **your** operator guide.",
+        "",
+        "| Role | Login | Primary METL tag | Key reporting |",
+        "|------|-------|------------------|---------------|",
+    ]
+    role_order = ["TM", "DTM", "KM", "RMA", "NETAD", "DF", "INT", "END", "ASA", "SIEM", "SYSAD"]
+    for role_code in role_order:
+        role = dashboards["roles"][role_code]
+        primary_tag = role["metl_tags"]["primary"][0]
+        reporting = role["reporting_deliverables"][0]
+        lines.append(
+            f"| {role['title']} | `{role['user_login']}` | `{primary_tag}` | {reporting} |"
+        )
+
+    lines.extend([
+        "",
+        "## Shared rules",
+        "- All evidence and findings go in IRIS — not email or chat",
+        "- KM authors SitReps; TM approves MOP 7.2.1",
+        "- NETO tickets start at **1001** in `01 - Authority and NETO Access`",
+        "- Child investigations use case template **OhCR-DCOE-INCIDENT**",
+        "",
+        "## Quick navigation",
+        "- **Alerts:** `/alerts` — use saved filters listed in your role guide",
+        "- **Dashboard:** `/dashboard` — your assigned tasks and cases",
+        "- **Mission case Tasks:** filter Tags column per your role guide",
+    ])
+    return {
+        "title": "START HERE — Team Responsibility Matrix",
+        "content": "\n".join(lines),
+    }
+
+
+def build_role_guide_directory(dashboards: dict) -> dict:
+    role_order = ["TM", "DTM", "KM", "RMA", "NETAD", "DF", "INT", "END", "ASA", "SIEM", "SYSAD"]
+    notes = [build_responsibility_matrix_note(dashboards)]
+    for role_code in role_order:
+        role = dashboards["roles"][role_code]
+        notes.append({
+            "title": f"Operator Guide — {role['title']} ({role_code})",
+            "content": render_role_operator_note(role_code, role),
+        })
+    return {
+        "title": dashboards["mission_case_note_directory"],
+        "notes": notes,
+    }
+
+
+def build_mission_case_template(metl_data: dict, note_data: dict, dashboards_data: dict) -> dict:
     tasks = [metl_task_to_template_task(entry) for entry in metl_data["tasks"]]
+    directories = [build_role_guide_directory(dashboards_data)]
+    directories.extend(build_note_directories(note_data))
 
     return {
         "name": "OhCR-DCOE-MISSION-MASTER",
         "display_name": "OhCR/DCOE Mission Master Case",
         "description": (
             "Master response mission case for OhCR and DCOE operations. "
-            "Contains the full METL checklist (Rev1a), reporting note templates, "
-            "and NETO tracker structure per OhCR SOP 303 Rev12g."
+            "Contains the full METL checklist (Rev1a), per-role operator guides, "
+            "reporting note templates, and NETO tracker structure per OhCR SOP 303 Rev12g."
         ),
         "author": "OhCR/DCOE Bootstrap",
         "title_prefix": "[MISSION]",
         "summary": (
             "\n\n## OhCR/DCOE Mission Case\n"
             "TLP:AMBER+STRICT — Internal system of record (DFIR-IRIS).\n\n"
-            "Team Manager: use **METL Evidence Index** notes and filter tasks tagged "
-            "`tm-checklist-report` for daily reporting compliance.\n\n"
-            "Knowledge Manager: draft daily SitReps in `07 - Daily SitRep`.\n"
+            "**Every team member:** open `10 - Operator Guides (Read First)` and read your role guide.\n\n"
+            "Team Manager: METL Evidence Index + filter `tm-checklist-report`.\n\n"
+            "Knowledge Manager: daily SitReps in `07 - Daily SitRep`.\n"
         ),
         "tags": ["ohcr", "dcoe", "mission", "metl", "cyber-shield"],
         "classification": None,
         "tasks": tasks,
-        "note_directories": build_note_directories(note_data),
+        "note_directories": directories,
+    }
+
+
+def my_assigned_alerts_filter_data(user_id: int) -> dict:
+    return {
+        "alert_title": "",
+        "alert_description": "",
+        "alert_source": "",
+        "alert_tags": "",
+        "alert_status_id": "",
+        "alert_severity_id": "",
+        "alert_classification_id": "",
+        "alert_customer_id": "",
+        "source_start_date": "",
+        "source_end_date": "",
+        "creation_start_date": "",
+        "creation_end_date": "",
+        "alert_assets": "",
+        "alert_iocs": "",
+        "alert_ids": "",
+        "source_reference": "",
+        "case_id": "",
+        "alert_owner_id": str(user_id),
+        "alert_resolution_id": "",
+        "custom_conditions": "",
     }
 
 
@@ -187,7 +335,34 @@ def get_or_create_case_template(template_dict: dict, created_by_user_id: int):
 
     existing = CaseTemplate.query.filter(CaseTemplate.name == template_dict["name"]).first()
     if existing:
-        return existing, False
+        payload = dict(template_dict)
+        if not payload.get("classification"):
+            payload.pop("classification", None)
+
+        error = validate_case_template(payload, update=True)
+        if error:
+            raise RuntimeError(f"Invalid case template {template_dict['name']}: {error}")
+
+        sync_fields = [
+            "display_name",
+            "description",
+            "title_prefix",
+            "summary",
+            "tags",
+            "tasks",
+            "note_directories",
+        ]
+        changed = False
+        for field in sync_fields:
+            if field in payload and getattr(existing, field) != payload[field]:
+                setattr(existing, field, payload[field])
+                changed = True
+
+        if changed:
+            db.session.commit()
+            return existing, "updated"
+
+        return existing, "unchanged"
 
     payload = dict(template_dict)
     if not payload.get("classification"):
@@ -201,7 +376,7 @@ def get_or_create_case_template(template_dict: dict, created_by_user_id: int):
     template = CaseTemplate(**payload)
     db.session.add(template)
     db.session.commit()
-    return template, True
+    return template, "created"
 
 
 def merge_custom_attribute_fields(object_type: str, display_name: str, tab_name: str, fields: dict):
@@ -385,6 +560,45 @@ def bootstrap_saved_filters(created_by_user_id: int) -> tuple[int, int]:
     return created, existing
 
 
+def bootstrap_user_role_filters(dashboards_data: dict) -> tuple[int, int]:
+    from app import db
+    from app.datamgmt.manage.manage_users_db import get_user
+    from app.models import SavedFilter
+
+    created = 0
+    existing = 0
+
+    for role in dashboards_data["roles"].values():
+        user = get_user(role["user_login"], "user")
+        if not user:
+            continue
+
+        for entry in role.get("private_alert_filters", []):
+            found = SavedFilter.query.filter(
+                SavedFilter.filter_name == entry["name"],
+                SavedFilter.filter_type == "alerts",
+                SavedFilter.created_by == user.id,
+            ).first()
+
+            if found:
+                existing += 1
+                continue
+
+            saved_filter = SavedFilter(
+                filter_name=entry["name"],
+                filter_description=entry.get("description", ""),
+                filter_data=my_assigned_alerts_filter_data(user.id),
+                filter_is_private=True,
+                filter_type="alerts",
+                created_by=user.id,
+            )
+            db.session.add(saved_filter)
+            created += 1
+
+    db.session.commit()
+    return created, existing
+
+
 def bootstrap(dry_run: bool = False) -> int:
     from app import app, db
     from app.models.authorization import User
@@ -400,9 +614,10 @@ def bootstrap(dry_run: bool = False) -> int:
         metl_data = load_json("metl_tasks.json")
         note_data = load_json("note_templates.json")
         roles_data = load_json("roles.json")
+        dashboards_data = load_json("role_dashboards.json")
         incident_template = load_json("incident_case_template.json")
         filters_data = load_json("saved_filters.json")
-        mission_template = build_mission_case_template(metl_data, note_data)
+        mission_template = build_mission_case_template(metl_data, note_data, dashboards_data)
 
         admin = User.query.filter(User.user == app.config.get("IRIS_ADM_USERNAME", "administrator")).first()
         if not admin:
@@ -414,7 +629,8 @@ def bootstrap(dry_run: bool = False) -> int:
         print("OhCR/DCOE IRIS Bootstrap")
         print(f"  Resources: {RESOURCES_DIR}")
         print(f"  METL tasks: {metl_data['task_count']} ({metl_data['report_mop_count']} Report MOPs)")
-        print(f"  Note directories: {len(note_data['note_directories'])}")
+        print(f"  Note directories: {len(note_data['note_directories']) + 1} (includes operator guides)")
+        print(f"  Role operator guides: {len(dashboards_data['roles'])}")
         print(f"  Alert saved filters: {len(filters_data['filters'])}")
         print(f"  Dry run: {dry_run}")
 
@@ -424,7 +640,8 @@ def bootstrap(dry_run: bool = False) -> int:
             print(f"  Groups: {len(roles_data['groups'])}")
             print(f"  Users: {len(roles_data['users'])}")
             print(f"  Case templates: {mission_template['name']}, {incident_template['name']}")
-            print(f"  Saved filters: {len(filters_data['filters'])} alert presets")
+            print(f"  Saved filters: {len(filters_data['filters'])} shared alert presets")
+            print(f"  Per-user filters: {len(dashboards_data['roles'])} private 'My Assigned Alerts'")
             return 0
 
         for org_def in roles_data["organisations"]:
@@ -441,23 +658,27 @@ def bootstrap(dry_run: bool = False) -> int:
         if user_results["existing"]:
             print(f"  Users already present: {', '.join(user_results['existing'])}")
 
-        mission, mission_created = get_or_create_case_template(mission_template, admin.id)
-        incident, incident_created = get_or_create_case_template(incident_template, admin.id)
+        mission, mission_state = get_or_create_case_template(mission_template, admin.id)
+        incident, incident_state = get_or_create_case_template(incident_template, admin.id)
         print(
-            f"  Case template {'created' if mission_created else 'exists'}: "
+            f"  Case template {mission_state}: "
             f"{mission.name} ({len(mission_template['tasks'])} tasks, "
             f"{len(mission_template['note_directories'])} note directories)"
         )
-        print(
-            f"  Case template {'created' if incident_created else 'exists'}: {incident.name}"
-        )
+        print(f"  Case template {incident_state}: {incident.name}")
 
         bootstrap_custom_attributes()
         print("  Custom attributes updated: Cases (OhCR/DCOE Mission), Tasks (METL Tracking)")
 
         tm_user = User.query.filter(User.user == "dcoe-tm").first() or admin
         filters_created, filters_existing = bootstrap_saved_filters(tm_user.id)
-        print(f"  Saved filters: {filters_created} created, {filters_existing} already present")
+        print(f"  Shared alert filters: {filters_created} created, {filters_existing} already present")
+
+        role_filters_created, role_filters_existing = bootstrap_user_role_filters(dashboards_data)
+        print(
+            f"  Per-user role filters: {role_filters_created} created, "
+            f"{role_filters_existing} already present"
+        )
 
         siem_user = User.query.filter(User.user == "dcoe-siem-api").first()
         if siem_user and siem_user.api_key:
@@ -467,13 +688,14 @@ def bootstrap(dry_run: bool = False) -> int:
 
         print("\nBootstrap complete.")
         print("\nNext steps:")
-        print("  1. Log in as dcoe-tm (Team Manager)")
-        print("  2. Manage > Customers — create your NETO/customer entry")
-        print("  3. Manage > Cases — new case from template 'OhCR-DCOE-MISSION-MASTER'")
-        print("  4. Alerts — use saved filter 'OhCR-DCOE: Open Alert Queue'")
-        print("  5. Mission case Tasks — filter Tags column: tm-checklist-report")
-        print("  6. TM guide: source/app/resources/dcoe/tm_dashboard.md")
-        print("  7. SIEM feeder: copy dcoe_siem_feeder.example.json → dcoe_siem_feeder.json")
+        print("  1. Each team member logs in with their dcoe-* account")
+        print("  2. TM: Manage > Customers — create NETO/customer entry")
+        print("  3. TM: Manage > Cases — new case from 'OhCR-DCOE-MISSION-MASTER'")
+        print("  4. ALL: Mission case > 10 - Operator Guides — read your role guide")
+        print("  5. Use Alerts saved filters + private 'OhCR-DCOE: My Assigned Alerts'")
+        print("  6. Mission case Tasks — filter Tags per your role guide")
+        print("  7. Reference: source/app/resources/dcoe/role_operator_guides.md")
+        print("  8. SIEM feeder: copy dcoe_siem_feeder.example.json → dcoe_siem_feeder.json")
 
         if generated_password:
             print("\nLocal account password (all non-service users):")

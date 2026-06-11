@@ -197,6 +197,66 @@
         "name": "KM-owned METL",
         "task_tags_search": "analyst-km",
         "use": "Knowledge Manager task queue"
+      },
+      {
+        "name": "TM — leader tasks",
+        "task_tags_search": "leader-tm",
+        "role": "TM",
+        "use": "Team Manager led METL items"
+      },
+      {
+        "name": "DTM — leader tasks",
+        "task_tags_search": "leader-dtm",
+        "role": "DTM",
+        "use": "Deputy Team Manager led METL items"
+      },
+      {
+        "name": "RMA — analyst tasks",
+        "task_tags_search": "analyst-rma",
+        "role": "RMA",
+        "use": "Risk Management Auditor queue"
+      },
+      {
+        "name": "NETAD — analyst tasks",
+        "task_tags_search": "analyst-netad",
+        "role": "NETAD",
+        "use": "Network Administration SME queue"
+      },
+      {
+        "name": "DF — analyst tasks",
+        "task_tags_search": "analyst-df",
+        "role": "DF",
+        "use": "Digital Forensics SME queue"
+      },
+      {
+        "name": "INT — analyst tasks",
+        "task_tags_search": "analyst-int",
+        "role": "INT",
+        "use": "Intrusion Detection SME queue"
+      },
+      {
+        "name": "END — analyst tasks",
+        "task_tags_search": "analyst-end",
+        "role": "END",
+        "use": "Endpoint Analyst SME queue"
+      },
+      {
+        "name": "ASA — analyst tasks",
+        "task_tags_search": "analyst-asa",
+        "role": "ASA",
+        "use": "All Source Analyst queue"
+      },
+      {
+        "name": "SIEM — analyst tasks",
+        "task_tags_search": "analyst-siem",
+        "role": "SIEM",
+        "use": "SIEM Analyst queue"
+      },
+      {
+        "name": "SYSAD — analyst tasks",
+        "task_tags_search": "analyst-sysad",
+        "role": "SYSAD",
+        "use": "System Administration SME queue"
       }
     ]
   }

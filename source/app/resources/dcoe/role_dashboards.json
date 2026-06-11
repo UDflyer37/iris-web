@@ -1,0 +1,534 @@
+{
+  "version": "1.0",
+  "source": "OhCR IR Operators Guide Rev12g / METL Rev1a",
+  "tlp": "AMBER+STRICT",
+  "mission_case_note_directory": "10 - Operator Guides (Read First)",
+  "roles": {
+    "TM": {
+      "title": "Team Manager",
+      "user_login": "dcoe-tm",
+      "group": "OhCR-DCOE-TM",
+      "sop_role": "Team Lead — reporting authority and NETO coordination",
+      "responsibilities": [
+        "Lead the OhCR/DCOE team; issue mission guidance and enforce METL compliance",
+        "Own the 21 Report MOPs — validate evidence in METL Evidence Index daily",
+        "Sign MOE validation gates before shift turnover",
+        "Assign and prioritize alerts; approve NETO tickets (≥1001) in the tracker",
+        "Conduct daily inbrief; ensure SitRep (7.2.1) is complete before close of business",
+        "Approve Gold Report and AAR before mission close"
+      ],
+      "metl_tags": {
+        "primary": ["leader-tm"],
+        "reporting": ["tm-checklist-report", "tm-checklist-moe"],
+        "also_assigned": ["analyst-tm"]
+      },
+      "note_directories": [
+        {"path": "01 - Authority and NETO Access", "use": "NETO ticket tracker — approve network actions"},
+        {"path": "07 - Daily SitRep", "use": "Validate KM drafts; sign off MOP 7.2.1"},
+        {"path": "METL Evidence Index", "use": "21 Report MOP compliance board"},
+        {"path": "08 - Gold Report", "use": "Final outbrief approval (MOP 7.4.1)"},
+        {"path": "09 - AAR and Hotwash", "use": "Ensure ≥3 AAR comments (MOP 7.4.2)"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: Open Alert Queue", "when": "Start of shift — triage all open alerts"},
+        {"name": "OhCR-DCOE: New Unassigned Alerts", "when": "Assign owners to incoming detections"},
+        {"name": "OhCR-DCOE: High and Critical", "when": "Escalation review"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you as TM"}
+      ],
+      "iris_tools": [
+        {"tool": "Alerts", "use": "Assign detections to SMEs; merge or escalate to child incident cases"},
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: tm-checklist-report and tm-checklist-moe"},
+        {"tool": "Mission case → Notes", "use": "NETO tracker, SitRep validation, METL index"},
+        {"tool": "Manage → Cases", "use": "Create child cases from OhCR-DCOE-INCIDENT template"},
+        {"tool": "Dashboard", "use": "Your assigned global tasks and open cases"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": [
+          "Open Alerts → OhCR-DCOE: Open Alert Queue",
+          "Mission case → Tasks → filter leader-tm and tm-checklist-report",
+          "Review 07 - Daily SitRep → Daily Inbrief Log"
+        ],
+        "during_ops": [
+          "Assign new alerts to the correct SME",
+          "Log NETO actions in 01 tracker before execution",
+          "Mark METL tasks Done only when evidence is linked in notes"
+        ],
+        "end_of_shift": [
+          "Confirm KM published OhCR + Customer SitReps",
+          "Mark MOP 7.2.1 task Done with note links",
+          "Update METL Report MOP Evidence Index"
+        ]
+      },
+      "reporting_deliverables": [
+        "METL Report MOP evidence (21 items)",
+        "MOE validation sign-offs",
+        "Daily SitRep approval (7.2.1)",
+        "Gold Report / AAR approval (7.4.x)"
+      ],
+      "coordinates_with": ["KM", "DTM", "NETO", "All SMEs"]
+    },
+    "DTM": {
+      "title": "Deputy Team Manager",
+      "user_login": "dcoe-dtm",
+      "group": "OhCR-DCOE-DTM",
+      "sop_role": "Deputy Team Lead — planning and operational oversight",
+      "responsibilities": [
+        "Support TM on mission planning, COA development, and intel integration",
+        "Lead Core Task 2 assessment products with RMA (operational environment, threat)",
+        "Compile planning inputs for Gold Report with KM",
+        "Back-brief TM on hunt/IR status and significant activities",
+        "Assume TM duties when delegated"
+      ],
+      "metl_tags": {
+        "primary": ["leader-dtm"],
+        "also_assigned": ["analyst-dtm"]
+      },
+      "note_directories": [
+        {"path": "02 - Mission Planning", "use": "Mission analysis, COA worksheet, limitations"},
+        {"path": "03 - Battlespace Enumeration", "use": "Review network/vuln inputs from SMEs"},
+        {"path": "08 - Gold Report", "use": "Compile planning and assessment sections"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: Open Alert Queue", "when": "Situational awareness"},
+        {"name": "OhCR-DCOE: Cyber Shield Mission", "when": "Exercise-wide alert picture"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: leader-dtm"},
+        {"tool": "Mission case → Notes", "use": "02 Mission Planning whiteboard and COA"},
+        {"tool": "Cases", "use": "Monitor child incident cases linked in 05 index"},
+        {"tool": "Dashboard", "use": "Your task queue and case list"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": [
+          "Mission case → Tasks → filter leader-dtm",
+          "Review 02 - Mission Planning for open COA/MA items"
+        ],
+        "during_ops": [
+          "Coordinate with ASA on intel requirements",
+          "Ensure hunt cases are linked in 05 - Active Incidents Index"
+        ],
+        "end_of_shift": [
+          "Brief TM on planning deltas for SitRep",
+          "Update Gold Report outline inputs in 08"
+        ]
+      },
+      "reporting_deliverables": [
+        "Mission analysis and COA products (Core Task 2)",
+        "Gold Report planning sections",
+        "DFIR threat detection coordination (3.5.3)"
+      ],
+      "coordinates_with": ["TM", "KM", "RMA", "ASA"]
+    },
+    "KM": {
+      "title": "Knowledge Manager",
+      "user_login": "dcoe-km",
+      "group": "OhCR-DCOE-KM",
+      "sop_role": "Knowledge Manager — system of record and reporting author",
+      "responsibilities": [
+        "Maintain DFIR-IRIS as the authoritative evidence repository",
+        "Author daily OhCR Internal and Customer NETO SitReps (MOP 7.2.1)",
+        "Document unauthorized artifacts per 4.6.3",
+        "Compile Gold Report narrative with DTM/TM",
+        "Maintain METL evidence links and artifact documentation log"
+      ],
+      "metl_tags": {
+        "primary": ["analyst-km"],
+        "also_assigned": []
+      },
+      "note_directories": [
+        {"path": "05 - Hunt and Incident Response", "use": "Artifact documentation log"},
+        {"path": "06 - Hardening and Mitigations", "use": "Adversary removal and remediation inputs"},
+        {"path": "07 - Daily SitRep", "use": "PRIMARY — copy templates daily"},
+        {"path": "08 - Gold Report", "use": "Draft executive summary and recommendations"},
+        {"path": "METL Evidence Index", "use": "Link evidence for KM-owned MOPs"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: Cyber Shield Mission", "when": "Track exercise alerts for SitRep activities"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Mission case → Notes", "use": "Copy SitRep templates daily; never give OhCR version to NETO"},
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-km"},
+        {"tool": "Case → Evidence", "use": "Upload and tag artifacts referenced in notes"},
+        {"tool": "Case → IOCs/Assets", "use": "Ensure detection context is documented"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": [
+          "Mission case → Tasks → filter analyst-km",
+          "Review 05 artifact log for overnight additions"
+        ],
+        "during_ops": [
+          "Document artifacts as SMEs upload evidence",
+          "Capture significant activities for SitRep section 3"
+        ],
+        "end_of_shift": [
+          "Copy SitRep TEMPLATE — OhCR Internal → fill → save as SitRep OhCR YYYY-MM-DD",
+          "Copy SitRep TEMPLATE — Customer NETO → sanitize → save as SitRep Customer YYYY-MM-DD",
+          "Notify TM when both are ready for MOP 7.2.1 sign-off"
+        ]
+      },
+      "reporting_deliverables": [
+        "Daily SitRep OhCR + Customer versions (7.2.1)",
+        "Artifact documentation (4.6.3)",
+        "Gold Report narrative (7.4.1)",
+        "Adversary removal report inputs (5.3.1)"
+      ],
+      "coordinates_with": ["TM", "DTM", "All SMEs", "NETO (Customer SitRep only)"]
+    },
+    "RMA": {
+      "title": "Risk Management Auditor",
+      "user_login": "dcoe-rma",
+      "group": "OhCR-DCOE-RMA",
+      "sop_role": "Risk Management Auditor SME",
+      "responsibilities": [
+        "Lead operational environment and environmental effects analysis (2.2.1–2.2.2)",
+        "Maintain 5x5 risk matrix and Dynamic Risk Analysis (DRA)",
+        "Document network actions and NETO ticket compliance (3.3.4)",
+        "Validate vulnerability findings feed SitRep and Gold Report",
+        "Support MOE validation with TM on risk-related gates"
+      ],
+      "metl_tags": {
+        "primary": ["analyst-rma"],
+        "also_assigned": []
+      },
+      "note_directories": [
+        {"path": "01 - Authority and NETO Access", "use": "Support NETO ticket risk column"},
+        {"path": "03 - Battlespace Enumeration", "use": "Vulnerability analysis log"},
+        {"path": "04 - Key Terrain and Risk", "use": "5x5 matrix and DRA — PRIMARY workspace"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: High and Critical", "when": "Risk-relevant escalations"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-rma"},
+        {"tool": "Mission case → Notes", "use": "04 Cyber Defense Analysis and vuln log"},
+        {"tool": "Case → Assets", "use": "Register critical assets and key terrain"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": ["Mission case → Tasks → filter analyst-rma", "Update 04 protect surface / DRA"],
+        "during_ops": ["Score new findings in vulnerability log", "Verify NETO tickets include risk rating"],
+        "end_of_shift": ["Provide risk delta summary to KM for SitRep section 4"]
+      },
+      "reporting_deliverables": [
+        "Operational environment reports (2.2.1–2.2.2)",
+        "Network action documentation (3.3.4)",
+        "5x5 / DRA products for Gold Report"
+      ],
+      "coordinates_with": ["DTM", "TM", "NETAD", "KM"]
+    },
+    "NETAD": {
+      "title": "Network Administration SME",
+      "user_login": "dcoe-netad",
+      "group": "OhCR-DCOE-NETAD",
+      "sop_role": "Network Administration SME",
+      "responsibilities": [
+        "Produce physical and logical network maps (2.6.1–2.6.2)",
+        "Maintain traffic flow overlay (3.3.5)",
+        "Support NETO network action requests with technical detail",
+        "Validate 95%+ network map MOE (3.3.7) with TM",
+        "Provide network context for hunt and hardening recommendations"
+      ],
+      "metl_tags": {
+        "primary": ["analyst-netad"],
+        "also_assigned": []
+      },
+      "note_directories": [
+        {"path": "03 - Battlespace Enumeration", "use": "Network map index — PRIMARY"},
+        {"path": "06 - Hardening and Mitigations", "use": "Network mitigation details"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: SIEM Detections", "when": "Network-relevant detections"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-netad"},
+        {"tool": "Mission case → Notes", "use": "03 Network Map and Overlay Index"},
+        {"tool": "Case → Assets", "use": "Document network assets and topology"},
+        {"tool": "Case → Evidence", "use": "Attach map files and pcaps metadata"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": ["Review assigned alerts for network scope", "Update map index links"],
+        "during_ops": ["Support SMEs with network context", "Log overlay changes in 03"],
+        "end_of_shift": ["Confirm map coverage % for MOE 3.3.7", "Send network delta to KM"]
+      },
+      "reporting_deliverables": [
+        "Physical network map (2.6.1)",
+        "Logical network map (2.6.2)",
+        "Traffic flow overlay (3.3.5)"
+      ],
+      "coordinates_with": ["RMA", "SYSAD", "INT", "TM"]
+    },
+    "DF": {
+      "title": "Digital Forensics SME",
+      "user_login": "dcoe-df",
+      "group": "OhCR-DCOE-DF",
+      "sop_role": "Digital Forensics SME",
+      "responsibilities": [
+        "Lead forensic analysis on escalated incidents",
+        "Collect and preserve artifacts; coordinate with KM on documentation",
+        "Support DFIR threat detection MOP (3.5.3) with DTM",
+        "Create and maintain child incident cases for deep-dive investigations",
+        "Provide forensic findings for SitRep and Gold Report"
+      ],
+      "metl_tags": {
+        "primary": ["analyst-df"],
+        "also_assigned": []
+      },
+      "note_directories": [
+        {"path": "05 - Hunt and Incident Response", "use": "Active incidents and artifact log"},
+        {"path": "05 - Hunt and Incident Response", "use": "Link child OhCR-DCOE-INCIDENT cases"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "when": "Your owned detections (shared filter)"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Alerts → Escalate", "use": "Promote alerts to OhCR-DCOE-INCIDENT child cases"},
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-df"},
+        {"tool": "Case → Evidence", "use": "Upload forensic images, logs, timelines"},
+        {"tool": "Case → Timeline", "use": "Build event sequence for incidents"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": ["Alerts → My Assigned Alerts", "Review 05 Active Incidents Index"],
+        "during_ops": ["Work child incident cases", "Upload artifacts; notify KM"],
+        "end_of_shift": ["Update incident case status", "Summarize findings for KM SitRep"]
+      },
+      "reporting_deliverables": [
+        "Forensic analysis on incident cases",
+        "DFIR threat detection support (3.5.3)",
+        "Artifact evidence in 05 log"
+      ],
+      "coordinates_with": ["KM", "DTM", "END", "INT"]
+    },
+    "INT": {
+      "title": "Intrusion Detection SME",
+      "user_login": "dcoe-int",
+      "group": "OhCR-DCOE-INT",
+      "sop_role": "Intrusion Detection / Hunt SME",
+      "responsibilities": [
+        "Triage and investigate intrusion-related alerts",
+        "Lead threat hunting on assigned terrain",
+        "Correlate SIEM detections with network and endpoint context",
+        "Escalate confirmed intrusions to child incident cases",
+        "Support hardening and adversary removal analysis"
+      ],
+      "metl_tags": {
+        "primary": ["analyst-int"],
+        "also_assigned": []
+      },
+      "note_directories": [
+        {"path": "05 - Hunt and Incident Response", "use": "Hunt findings and incident links"},
+        {"path": "06 - Hardening and Mitigations", "use": "Detection-driven mitigations"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: SIEM Detections", "when": "Primary detection feed"},
+        {"name": "OhCR-DCOE: Exercise Injects", "when": "White-cell hunt scenarios"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Alerts", "use": "Triage SIEM queue; add IOCs and assets"},
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-int"},
+        {"tool": "Cases", "use": "OhCR-DCOE-INCIDENT for confirmed hunts"},
+        {"tool": "Search", "use": "Cross-case IOC and asset correlation"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": ["Alerts → SIEM Detections + My Assigned Alerts"],
+        "during_ops": ["Investigate assigned alerts", "Create/update child cases"],
+        "end_of_shift": ["Hand open hunts to next shift via case comments"]
+      },
+      "reporting_deliverables": [
+        "Hunt status in 05 index",
+        "Detection analysis for SitRep significant activities"
+      ],
+      "coordinates_with": ["SIEM", "END", "DF", "NETAD"]
+    },
+    "END": {
+      "title": "Endpoint Analyst SME",
+      "user_login": "dcoe-end",
+      "group": "OhCR-DCOE-END",
+      "sop_role": "Endpoint Analysis SME",
+      "responsibilities": [
+        "Analyze endpoint-related alerts and EDR telemetry",
+        "Support forensic collection on workstations and servers",
+        "Document endpoint findings in incident child cases",
+        "Contribute endpoint mitigations to hardening recommendations",
+        "Validate protect-surface matrix for endpoint assets"
+      ],
+      "metl_tags": {
+        "primary": ["analyst-end"],
+        "also_assigned": []
+      },
+      "note_directories": [
+        {"path": "04 - Key Terrain and Risk", "use": "Endpoint assets in protect surface"},
+        {"path": "05 - Hunt and Incident Response", "use": "Endpoint incident documentation"},
+        {"path": "06 - Hardening and Mitigations", "use": "Host mitigation details"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: SIEM Detections", "when": "Endpoint-related detections"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Alerts", "use": "Triage endpoint alerts; tag assets"},
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-end"},
+        {"tool": "Case → Assets", "use": "Register hosts under investigation"},
+        {"tool": "Case → Evidence", "use": "Upload EDR exports and disk artifacts"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": ["My Assigned Alerts", "Check 04 for endpoint key terrain updates"],
+        "during_ops": ["Work assigned alerts and child cases", "Coordinate with DF on collections"],
+        "end_of_shift": ["Update 06 host mitigations", "Brief KM on endpoint findings"]
+      },
+      "reporting_deliverables": [
+        "Endpoint analysis on incidents",
+        "Host mitigation inputs for Gold Report"
+      ],
+      "coordinates_with": ["DF", "INT", "SIEM", "SYSAD"]
+    },
+    "ASA": {
+      "title": "All Source Analyst",
+      "user_login": "dcoe-asa",
+      "group": "OhCR-DCOE-ASA",
+      "sop_role": "All Source Analyst — intelligence and INTSUM",
+      "responsibilities": [
+        "Publish daily INTSUM for inbrief (7.1.2)",
+        "Develop prioritized intelligence requirements (2.4.1)",
+        "Evaluate threat/adversary and COA (2.2.3–2.2.4)",
+        "Coordinate with customer intel sources per SOP",
+        "Feed threat context to hunt SMEs and SitRep"
+      ],
+      "metl_tags": {
+        "primary": ["analyst-asa"],
+        "also_assigned": []
+      },
+      "note_directories": [
+        {"path": "02 - Mission Planning", "use": "Intelligence requirements — PRIMARY"},
+        {"path": "07 - Daily SitRep", "use": "INTSUM feeds Daily Inbrief Log"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: Exercise Injects", "when": "Intel-related injects"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-asa"},
+        {"tool": "Mission case → Notes", "use": "02 Intel Requirements; 07 Inbrief Log"},
+        {"tool": "Case → IOCs", "use": "Document threat indicators from intel sources"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": ["Post INTSUM to 07 Daily Inbrief Log", "Mission case → Tasks → analyst-asa"],
+        "during_ops": ["Update intel requirements status", "Brief DTM/TM on threat changes"],
+        "end_of_shift": ["Ensure INTSUM ready for next inbrief", "Provide threat summary to KM"]
+      },
+      "reporting_deliverables": [
+        "Daily INTSUM (7.1.2)",
+        "Prioritized intel requirements (2.4.1)",
+        "Threat evaluation products (2.2.3–2.2.4)"
+      ],
+      "coordinates_with": ["DTM", "TM", "INT", "KM"]
+    },
+    "SIEM": {
+      "title": "SIEM Analyst",
+      "user_login": "dcoe-siem",
+      "group": "OhCR-DCOE-SIEM",
+      "sop_role": "SIEM Analyst — detection pipeline and alert quality",
+      "responsibilities": [
+        "Monitor SIEM/Security Onion detection feed into IRIS",
+        "Triage new SIEM alerts before TM assignment",
+        "Enrich alerts with assets, IOCs, and severity",
+        "Tag alerts ohcr, dcoe, siem, cyber-shield for filtering",
+        "Support dcoe-siem-api feeder health and tuning"
+      ],
+      "metl_tags": {
+        "primary": ["analyst-siem"],
+        "also_assigned": []
+      },
+      "note_directories": [
+        {"path": "05 - Hunt and Incident Response", "use": "Log significant detection patterns"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: SIEM Detections", "when": "PRIMARY queue — all SIEM-sourced alerts"},
+        {"name": "OhCR-DCOE: New Unassigned Alerts", "when": "Pick up unassigned SIEM alerts"},
+        {"name": "OhCR-DCOE: Open Alert Queue", "when": "Full queue situational awareness"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Alerts", "use": "Primary workspace — enrich, tag, request TM assignment"},
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-siem"},
+        {"tool": "Manage → Users", "use": "dcoe-siem-api service account API key for feeder"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": ["Alerts → OhCR-DCOE: SIEM Detections", "Verify feeder is posting (check newest alerts)"],
+        "during_ops": ["Enrich and route alerts to INT/END/NETAD as appropriate", "Flag injects with inject tag"],
+        "end_of_shift": ["Clear or reassign open SIEM alerts", "Note tuning issues for SYSAD"]
+      },
+      "reporting_deliverables": [
+        "Detection pipeline status for SitRep",
+        "Alert quality and tuning notes"
+      ],
+      "coordinates_with": ["TM", "INT", "END", "SYSAD"]
+    },
+    "SYSAD": {
+      "title": "System Administration SME",
+      "user_login": "dcoe-sysad",
+      "group": "OhCR-DCOE-SYSAD",
+      "sop_role": "System Administration SME — platform and logging",
+      "responsibilities": [
+        "Maintain IRIS platform health and user access during exercise",
+        "Support logging/visibility requirements for NETO (2.3.x)",
+        "Assist NETAD with infrastructure asset documentation",
+        "Support SIEM feeder and integration troubleshooting",
+        "Document system changes in NETO tracker when required"
+      ],
+      "metl_tags": {
+        "primary": ["analyst-sysad"],
+        "also_assigned": []
+      },
+      "note_directories": [
+        {"path": "01 - Authority and NETO Access", "use": "Logging/access change tickets"},
+        {"path": "03 - Battlespace Enumeration", "use": "Infrastructure asset context"}
+      ],
+      "alert_filters": [
+        {"name": "OhCR-DCOE: Cyber Shield Mission", "when": "Platform-related exercise alerts"}
+      ],
+      "private_alert_filters": [
+        {"name": "OhCR-DCOE: My Assigned Alerts", "description": "Alerts assigned to you"}
+      ],
+      "iris_tools": [
+        {"tool": "Mission case → Tasks", "use": "Filter Tags: analyst-sysad"},
+        {"tool": "Manage → Users", "use": "Support account issues (with TM approval)"},
+        {"tool": "Server", "use": "dcoe_bootstrap.py and dcoe_siem_feeder.py maintenance"}
+      ],
+      "daily_workflow": {
+        "start_of_shift": ["Verify IRIS and feeder health", "Mission case → Tasks → analyst-sysad"],
+        "during_ops": ["Support SME access issues", "Assist SIEM with integration errors"],
+        "end_of_shift": ["Document infrastructure changes in 01 tracker", "Hand off open tasks"]
+      },
+      "reporting_deliverables": [
+        "Logging/access compliance (2.3.x)",
+        "Platform availability for SitRep"
+      ],
+      "coordinates_with": ["NETAD", "SIEM", "TM"]
+    }
+  }
+}
